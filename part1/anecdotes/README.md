@@ -1,4 +1,6 @@
-# Unicafe
+# Anecdotes
+
+The world of software engineering is filled with anecdotes that distill timeless truths from our field into short one-liners.
 
 A web application for collecting customer feedback.
 
@@ -9,7 +11,7 @@ The application displays the total number of collected feedback for each categor
 To start the application:
 
 ```bash
-cd unicafe
+cd anecdotes
 npm install
 npm run start
 ```
