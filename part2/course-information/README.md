@@ -1,8 +1,6 @@
 # Course Information
 
-<!-- A web application for collecting customer feedback.
-
-The application displays the total number of collected feedback for each category. -->
+A web application for rendering collections and modules.
 
 ## Development
 
