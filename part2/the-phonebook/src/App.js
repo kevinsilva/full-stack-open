@@ -29,29 +29,24 @@ const App = () => {
     setNewNumber('');
   };
 
-  const handleNameChange = (e) => {
-    setNewName(e.target.value);
-  };
-
-  const handleNumberChange = (e) => {
-    setNewNumber(e.target.value);
-  };
-
-  const handleFilterNameChange = (e) => {
-    setFilterName(e.target.value);
+  const handleChange = (setChange) => (e) => {
+    setChange(e.target.value);
   };
 
   return (
     <div>
       <Header title="Phonebook" type="main" />
-      <Filter filterName={filterName} handleChange={handleFilterNameChange} />
+      <Filter
+        filterName={filterName}
+        handleChange={handleChange(setFilterName)}
+      />
       <Header title="add a new" />
       <PersonForm
         addName={addName}
         newName={newName}
         newNumber={newNumber}
-        handleName={handleNameChange}
-        handleNumber={handleNumberChange}
+        handleName={handleChange(setNewName)}
+        handleNumber={handleChange(setNewNumber)}
       />
       <Header title="Numbers" />
       <Persons persons={persons} filterName={filterName} />
