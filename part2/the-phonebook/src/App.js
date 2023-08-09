@@ -23,9 +23,15 @@ const App = () => {
     const isNameRepeated = persons.some(
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     );
+    const newPerson = { name: newName, number: newNumber };
 
     if (isNameRepeated) alert(`${newName} already in the phonebook.`);
-    else setPersons([...persons, { name: newName, number: newNumber }]);
+    else
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then((response) => {
+          setPersons([...persons, response.data]);
+        });
 
     setNewName('');
     setNewNumber('');
