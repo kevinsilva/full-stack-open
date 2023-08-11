@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Header from './components/Header';
+import personService from './services/Person';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,10 +12,7 @@ const App = () => {
   const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
-    const eventHandler = (response) => setPersons(response.data);
-    const promise = axios.get('http://localhost:3001/persons');
-
-    promise.then(eventHandler);
+    personService.getAll().then((initialPersons) => setPersons(initialPersons));
   }, []);
 
   const addName = (e) => {
@@ -27,14 +24,22 @@ const App = () => {
 
     if (isNameRepeated) alert(`${newName} already in the phonebook.`);
     else
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then((response) => {
-          setPersons([...persons, response.data]);
-        });
+      personService.create(newPerson).then((returnedPerson) => {
+        setPersons([...persons, returnedPerson]);
+      });
 
     setNewName('');
     setNewNumber('');
+  };
+
+  const removeName = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService.remove(person.id).then(() => {
+        setPersons(
+          persons.filter((addedPerson) => addedPerson.id !== person.id)
+        );
+      });
+    }
   };
 
   const handleChange = (setChange) => (e) => {
@@ -57,7 +62,11 @@ const App = () => {
         handleNumber={handleChange(setNewNumber)}
       />
       <Header title="Numbers" />
-      <Persons persons={persons} filterName={filterName} />
+      <Persons
+        persons={persons}
+        filterName={filterName}
+        handleRemove={removeName}
+      />
     </div>
   );
 };
