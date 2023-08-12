@@ -12,7 +12,10 @@ const App = () => {
   const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
-    personService.getAll().then((initialPersons) => setPersons(initialPersons));
+    personService
+      .getAll()
+      .then((initialPersons) => setPersons(initialPersons))
+      .catch((error) => console.log(error));
   }, []);
 
   const addName = (e) => {
@@ -20,13 +23,36 @@ const App = () => {
     const isNameRepeated = persons.some(
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     );
+    const getPerson = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
     const newPerson = { name: newName, number: newNumber };
 
-    if (isNameRepeated) alert(`${newName} already in the phonebook.`);
-    else
-      personService.create(newPerson).then((returnedPerson) => {
-        setPersons([...persons, returnedPerson]);
-      });
+    if (isNameRepeated) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        personService
+          .update(getPerson.id, newPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== getPerson.id ? person : returnedPerson
+              )
+            );
+          })
+          .catch((error) => console.log(error));
+      }
+    } else {
+      personService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons([...persons, returnedPerson]);
+        })
+        .catch((error) => console.log(error));
+    }
 
     setNewName('');
     setNewNumber('');
@@ -34,11 +60,14 @@ const App = () => {
 
   const removeName = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      personService.remove(person.id).then(() => {
-        setPersons(
-          persons.filter((addedPerson) => addedPerson.id !== person.id)
-        );
-      });
+      personService
+        .remove(person.id)
+        .then(() => {
+          setPersons(
+            persons.filter((addedPerson) => addedPerson.id !== person.id)
+          );
+        })
+        .catch((error) => console.log(error));
     }
   };
 
