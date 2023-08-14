@@ -3,13 +3,16 @@ import Persons from './components/Persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Header from './components/Header';
+import Notification from './components/Notification';
 import personService from './services/Person';
+import './index.css';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterName, setFilterName] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     personService
@@ -44,6 +47,7 @@ const App = () => {
             );
           })
           .catch((error) => console.log(error));
+        setMessageAndClear(`Changed ${newName}'s number`);
       }
     } else {
       personService
@@ -52,6 +56,7 @@ const App = () => {
           setPersons([...persons, returnedPerson]);
         })
         .catch((error) => console.log(error));
+      setMessageAndClear(`Added ${newName}`);
     }
 
     setNewName('');
@@ -75,9 +80,15 @@ const App = () => {
     setChange(e.target.value);
   };
 
+  const setMessageAndClear = (message) => {
+    setMessage(message);
+    setTimeout(() => setMessage(''), 5000);
+  };
+
   return (
     <div>
       <Header title="Phonebook" type="main" />
+      <Notification message={message} />
       <Filter
         filterName={filterName}
         handleChange={handleChange(setFilterName)}
