@@ -13,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filterName, setFilterName] = useState('');
   const [message, setMessage] = useState('');
+  const [messageStyle, setMessageStyle] = useState('');
 
   useEffect(() => {
     personService
@@ -46,7 +47,15 @@ const App = () => {
               )
             );
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            setMessageStyle('error-msg');
+            setMessageAndClear(
+              `Information of ${newName} has already been removed from server`
+            );
+            setPersons(persons.filter((person) => person.id !== getPerson.id));
+          });
+        setMessageStyle('success-msg');
         setMessageAndClear(`Changed ${newName}'s number`);
       }
     } else {
@@ -56,6 +65,7 @@ const App = () => {
           setPersons([...persons, returnedPerson]);
         })
         .catch((error) => console.log(error));
+      setMessageStyle('success-msg');
       setMessageAndClear(`Added ${newName}`);
     }
 
@@ -69,7 +79,9 @@ const App = () => {
         .remove(person.id)
         .then(() => {
           setPersons(
-            persons.filter((addedPerson) => addedPerson.id !== person.id)
+            persons.filter(
+              (phonebookPerson) => phonebookPerson.id !== person.id
+            )
           );
         })
         .catch((error) => console.log(error));
@@ -88,7 +100,7 @@ const App = () => {
   return (
     <div>
       <Header title="Phonebook" type="main" />
-      <Notification message={message} />
+      <Notification style={messageStyle} message={message} />
       <Filter
         filterName={filterName}
         handleChange={handleChange(setFilterName)}

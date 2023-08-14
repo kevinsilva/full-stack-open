@@ -5,3 +5,11 @@
   border-radius: 0.5rem;
   padding: 1rem;
 }
+
+.error-msg {
+  background-color: rgb(253, 242, 242);
+  color: rgb(154, 30, 29);
+  border: 1px solid rgb(248, 180, 179);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
