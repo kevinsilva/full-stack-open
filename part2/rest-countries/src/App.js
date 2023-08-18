@@ -3,8 +3,6 @@ import Filter from './components/Filter';
 import Countries from './components/Countries';
 import countryService from './services/getCountry';
 
-import './index.css';
-
 function App() {
   const [countries, setCountries] = useState([]);
   const [filterCountry, setFilterCountry] = useState('');
