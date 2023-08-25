@@ -1,7 +1,19 @@
 const express = require('express');
+const morgan = require('morgan');
+
 const app = express();
 
 app.use(express.json());
+
+morgan.token('post-data', function (request, _) {
+  if (request.method === 'POST') return JSON.stringify(request.body);
+});
+
+app.use(
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms :post-data'
+  )
+);
 
 let persons = [
   {
@@ -34,7 +46,7 @@ let persons = [
 
 const generateID = () => Math.floor(Math.random() * 999999 + 1);
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (_, response) => {
   response.json(persons);
 });
 
@@ -46,7 +58,7 @@ app.get('/api/persons/:id', (request, response) => {
   else response.status(404).end();
 });
 
-app.get('/info', (request, response) => {
+app.get('/info', (_, response) => {
   const info = `Phonebook has info for ${persons.length} people`;
   const date = new Date();
 
@@ -63,12 +75,12 @@ app.get('/info', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const body = request.body;
   if (!body.name || !body.number)
-    return response.status(404).json({ error: 'content missing' });
+    return response.status(404).json({ error: 'name or number is missing' });
 
   const isPersonRepeated = persons.find((person) => person.name === body.name);
 
   if (isPersonRepeated)
-    return response.status(409).json({ error: 'Name must be unique' });
+    return response.status(409).json({ error: 'name must be unique' });
 
   const person = {
     name: body.name,
