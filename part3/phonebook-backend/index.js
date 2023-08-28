@@ -1,9 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 morgan.token('post-data', function (request, _) {
   if (request.method === 'POST') return JSON.stringify(request.body);
@@ -37,12 +39,6 @@ let persons = [
     number: '39-23-6423122',
   },
 ];
-
-// const generateID = () => {
-//   const maxID =
-//     persons.length > 0 ? Math.max(...persons.map((person) => person.id)) : 0;
-//   return maxID + 1;
-// };
 
 const generateID = () => Math.floor(Math.random() * 999999 + 1);
 
@@ -99,7 +95,7 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end();
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
