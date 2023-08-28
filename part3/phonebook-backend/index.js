@@ -7,6 +7,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use(express.static('build'));
+
 morgan.token('post-data', function (request, _) {
   if (request.method === 'POST') return JSON.stringify(request.body);
 });
