@@ -19,7 +19,9 @@ const App = () => {
     personService
       .getAll()
       .then((initialPersons) => setPersons(initialPersons))
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const addName = (e) => {
@@ -46,29 +48,32 @@ const App = () => {
                 person.id !== getPerson.id ? person : returnedPerson
               )
             );
+            setMessageStyle('success-msg');
+            setMessageAndClear(`Changed ${newName}'s number`);
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
             setMessageStyle('error-msg');
             setMessageAndClear(
               `Information of ${newName} has already been removed from server`
             );
             setPersons(persons.filter((person) => person.id !== getPerson.id));
           });
-        setMessageStyle('success-msg');
-        setMessageAndClear(`Changed ${newName}'s number`);
       }
     } else {
       personService
         .create(newPerson)
         .then((returnedPerson) => {
           setPersons([...persons, returnedPerson]);
+          setMessageStyle('success-msg');
+          setMessageAndClear(`Added ${newName}`);
         })
-        .catch((error) => console.log(error));
-      setMessageStyle('success-msg');
-      setMessageAndClear(`Added ${newName}`);
+        .catch((error) => {
+          console.error(error.response.data.error);
+          setMessageStyle('error-msg');
+          setMessageAndClear(`Error: ${error.response.data.error}`);
+        });
     }
-
     setNewName('');
     setNewNumber('');
   };
