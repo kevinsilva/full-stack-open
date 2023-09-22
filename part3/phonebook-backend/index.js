@@ -6,13 +6,19 @@ require('dotenv').config();
 
 const Person = require('./models/person');
 
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method);
-  console.log('Path:  ', request.path);
-  console.log('Body:  ', request.body);
-  console.log('---');
-  next();
-};
+app.use(cors());
+app.use(express.json());
+app.use(express.static('build'));
+
+morgan.token('post-data', function (request, _) {
+  if (request.method === 'POST') return JSON.stringify(request.body);
+});
+
+app.use(
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms :post-data'
+  )
+);
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
@@ -29,21 +35,6 @@ const errorHandler = (error, request, response, next) => {
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
 };
-
-app.use(cors());
-app.use(express.json());
-app.use(requestLogger);
-app.use(express.static('build'));
-
-morgan.token('post-data', function (request, _) {
-  if (request.method === 'POST') return JSON.stringify(request.body);
-});
-
-app.use(
-  morgan(
-    ':method :url :status :res[content-length] - :response-time ms :post-data'
-  )
-);
 
 app.get('/api/persons', (_, response) => {
   Person.find({}).then((person) => {
@@ -89,7 +80,7 @@ app.post('/api/persons', (request, response, next) => {
   person
     .save()
     .then((savedPerson) => {
-      response.json(savedPerson);
+      response.status(201).json(savedPerson);
     })
     .catch((error) => {
       next(error);
