@@ -6,8 +6,8 @@ POST http://localhost:3003/api/blogs
 content-Type: application/json
 
   {
-    "title": "Not Yet",
+    "title": "Come on...",
     "author": "Kevin Silva",
-    "url": "github/kevinsilva",
+    "url": "https://github.com/kevinsilva",
     "likes": 0
   }
