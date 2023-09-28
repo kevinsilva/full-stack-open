@@ -2,11 +2,11 @@ const express = require('express');
 const blogsRouter = express.Router();
 const Blog = require('../models/blog');
 
-blogsRouter.get('/api/blogs', (_request, response) => {
+blogsRouter.get('/', (_request, response) => {
   Blog.find({}).then((blogs) => response.json(blogs));
 });
 
-blogsRouter.get('/api/blogs/:id', (request, response, next) => {
+blogsRouter.get('/:id', (request, response, next) => {
   Blog.findById(request.params.id)
     .then((blog) => {
       if (blog) response.json(blog);
@@ -15,7 +15,8 @@ blogsRouter.get('/api/blogs/:id', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-blogsRouter.post('/api/blogs', (request, response, next) => {
+
+blogsRouter.post('/', (request, response, next) => {
   const body = request.body;
 
   const blog = new Blog({
@@ -32,7 +33,7 @@ blogsRouter.post('/api/blogs', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-blogsRouter.put('/api/blogs/:id', (request, response, next) => {
+blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body;
 
   const blog = {
@@ -42,12 +43,16 @@ blogsRouter.put('/api/blogs/:id', (request, response, next) => {
     likes: body.likes
   }
 
-  Blog.findByIdAndUpdate(request.params.id, blog, { new: true }).then((updatedBlog) => {
+  Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  }).then((updatedBlog) => {
     response.json(updatedBlog);
   }).catch((error) => next(error));
 });
 
-blogsRouter.delete('/api/blogs/:_id', (request, response, next) => {
+blogsRouter.delete('/:_id', (request, response, next) => {
   Blog.findByIdAndRemove(request.params._id)
   .then(() => {
     response.status(204).end();

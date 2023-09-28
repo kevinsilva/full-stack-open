@@ -6,9 +6,9 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-  "title": "Not working",
+  "title": "Working!",
   "author": "Kevin Silva",
   "url": "https://github.com/kevinsilva",
-  "likes": 0
+  "likes": 1000
   }
 
