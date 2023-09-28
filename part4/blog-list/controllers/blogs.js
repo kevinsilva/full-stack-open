@@ -1,7 +1,8 @@
-const blogsRouter = require('express').Router();
+const express = require('express');
+const blogsRouter = express.Router();
 const Blog = require('../models/blog');
 
-blogsRouter.get('/api/blogs', (request, response) => {
+blogsRouter.get('/api/blogs', (_request, response) => {
   Blog.find({}).then((blogs) => response.json(blogs));
 });
 
@@ -31,13 +32,6 @@ blogsRouter.post('/api/blogs', (request, response, next) => {
     .catch((error) => next(error));
 });
 
-blogsRouter.delete('/api/blogs/:_id', (request, response, next) => {
-  Blog.findByIdAndRemove(request.params._id)
-  .then(() => {
-    response.status(204).end();
-  }).catch((error) => next(error));
-});
-
 blogsRouter.put('/api/blogs/:id', (request, response, next) => {
   const body = request.body;
 
@@ -53,5 +47,11 @@ blogsRouter.put('/api/blogs/:id', (request, response, next) => {
   }).catch((error) => next(error));
 });
 
+blogsRouter.delete('/api/blogs/:_id', (request, response, next) => {
+  Blog.findByIdAndRemove(request.params._id)
+  .then(() => {
+    response.status(204).end();
+  }).catch((error) => next(error));
+});
 
   module.exports = blogsRouter;
