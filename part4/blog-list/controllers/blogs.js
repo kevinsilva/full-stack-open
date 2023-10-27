@@ -11,10 +11,9 @@ blogsRouter.get('/:id', (request, response, next) => {
     .then((blog) => {
       if (blog) response.json(blog);
       else response.status(404).end();
-  })
+    })
     .catch((error) => next(error));
 });
-
 
 blogsRouter.post('/', (request, response, next) => {
   const body = request.body;
@@ -23,13 +22,14 @@ blogsRouter.post('/', (request, response, next) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
   });
 
-  blog.save()
+  blog
+    .save()
     .then((savedBlog) => {
-    response.status(201).json(savedBlog);
-  })
+      response.status(201).json(savedBlog);
+    })
     .catch((error) => next(error));
 });
 
@@ -40,23 +40,26 @@ blogsRouter.put('/:id', (request, response, next) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
-  }
+    likes: body.likes,
+  };
 
   Blog.findByIdAndUpdate(request.params.id, blog, {
     new: true,
     runValidators: true,
     context: 'query',
-  }).then((updatedBlog) => {
-    response.json(updatedBlog);
-  }).catch((error) => next(error));
+  })
+    .then((updatedBlog) => {
+      response.json(updatedBlog);
+    })
+    .catch((error) => next(error));
 });
 
 blogsRouter.delete('/:_id', (request, response, next) => {
   Blog.findByIdAndRemove(request.params._id)
-  .then(() => {
-    response.status(204).end();
-  }).catch((error) => next(error));
+    .then(() => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
-  module.exports = blogsRouter;
+module.exports = blogsRouter;
