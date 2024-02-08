@@ -143,7 +143,7 @@ describe(('deletion of a blog post'), () => {
     const blogsAtEnd = await helper.blogsInDB();
     const blogTitle = blogsAtEnd.map(blog => blog.title);
 
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length - 1);
     expect(blogTitle).not.toContainEqual(blogToDelete.title);
   });
 });

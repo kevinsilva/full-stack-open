@@ -62,7 +62,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
 
 blogsRouter.delete('/:_id', async (request, response, next) => {
   try {
-    await Blog.findByIdAndRemove(request.params._id);
+    await Blog.findByIdAndDelete(request.params._id);
     response.status(204).end();
   } catch (error) {
     next(error);
