@@ -75,7 +75,7 @@ test('creation fails with proper status code and message if password is too shor
 
     const usersAtEnd = await helper.usersInDB()
 
-    expect(result.body.error).toContain('Password must be at least 3 characters long')
+    expect(result.body.error).toContain('password must be at least 3 characters long')
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
 })
 
