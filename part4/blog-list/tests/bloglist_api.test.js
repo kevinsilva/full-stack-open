@@ -5,13 +5,36 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog');
+const User = require('../models/user');
+
 mongoose.set("bufferTimeoutMS", 30000);
 
+let token;
 
 beforeEach(async () => {
   await Blog.deleteMany({});
   await Blog.insertMany(helper.initialBlogs);
 });
+
+beforeEach(async () => {
+  await User.deleteMany({});
+
+  const testUser = {
+    username: 'tester',
+    password: 'tester'
+  }
+
+  await api
+    .post('/api/users')
+    .send(testUser)
+
+  const login = await api
+    .post('/api/login')
+    .send(testUser)
+
+  token = login.body.token
+});
+
 
 describe('when there is initially some blogs saved', () => {
   test('blogs are returned as json', async () => {
@@ -45,7 +68,7 @@ describe('viewing a specific blog', () => {
       expect(blog._id).toBeUndefined();
     })
   })
-  test('succeds with a valid id', async () => {
+  test('succeeds with a valid id', async () => {
     const blogsAtStart = await helper.blogsInDB();
     const blogToView = await blogsAtStart[0];
 
@@ -83,6 +106,7 @@ describe(('addition of a new blog'), () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
@@ -101,6 +125,7 @@ describe(('addition of a new blog'), () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(400);
 
@@ -118,6 +143,7 @@ describe(('addition of a new blog'), () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
@@ -133,18 +159,38 @@ describe(('addition of a new blog'), () => {
 
 describe(('deletion of a blog post'), () => {
   test('deletes a blog post if id is valid', async () => {
+    const newBlog = {
+      title: 'Test',
+      author: 'Tester',
+      url: 'https://tester.com/',
+      likes: 0,
+    };
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+
     const blogsAtStart = await helper.blogsInDB();
-    const blogToDelete = blogsAtStart[0];
+    const blogToDelete = blogsAtStart[blogsAtStart.length - 1];
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204);
 
     const blogsAtEnd = await helper.blogsInDB();
     const blogTitle = blogsAtEnd.map(blog => blog.title);
 
-    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length - 1);
+    expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1);
     expect(blogTitle).not.toContainEqual(blogToDelete.title);
+  });
+  test('fails with status code 401 if token is not provided', async () => {
+    const blogsAtStart = await helper.blogsInDB();
+
+    await api
+      .delete(`/api/blogs/${blogsAtStart[0].id}`)
+      .expect(401);
   });
 });
 
