@@ -5,6 +5,7 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import LogoutButton from './components/LogoutButton'
 import blogService from './services/blogs'
+import Title from './components/Title'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -45,17 +46,16 @@ const App = () => {
 
   return (
     <div>
-      <h1>{user ? 'blogs' : 'log in to application'}</h1>
+      <Title user={user}/>
       <Notification message={message} />
 
+      {!user && <LoginForm onUserChange={(user) => setUser(user)} onMessage={(message) => setMessage(message)} />}
 
-      {user === null ?
-        <LoginForm onUserChange={(user) => setUser(user)} onMessage={(message) => setMessage(message)} /> : <>
+      {user && <>
         <LogoutButton user={user} onLogout={() => setUser(null)} />
         <BlogForm onMessage={(message) => setMessage(message)} onNewBlog={(blog) => setBlogs(blogs.concat(blog))} />
         <BlogList blogs={blogs} />
-        </>
-      }
+        </>}
     </div>
   )
 }
