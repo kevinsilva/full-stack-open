@@ -25,6 +25,7 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
+
   }, [])
 
   useEffect(() => {
@@ -62,7 +63,7 @@ const App = () => {
             blogFormRef.current.toggleVisibility()
             }} />
         </Toggable>
-        <BlogList blogs={blogs} />
+        <BlogList blogs={blogs} userInfo={user.name} onMessage={(message) => setMessage(message)}/>
         </>}
     </div>
   )
