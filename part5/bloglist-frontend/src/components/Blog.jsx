@@ -7,7 +7,6 @@ const Blog = ({ blog, userInfo, onMessage }) => {
     try {
       await blogService.update(newBlogLike)
     } catch (error) {
-      console.error(error)
       onMessage({
         text: 'error adding like',
         class: 'error'
@@ -24,7 +23,6 @@ const Blog = ({ blog, userInfo, onMessage }) => {
       try {
         await blogService.remove(blog.id)
       } catch (error) {
-        console.error(error)
         onMessage({
           text: 'error removing blog',
           class: 'error'
