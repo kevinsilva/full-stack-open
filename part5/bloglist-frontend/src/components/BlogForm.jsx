@@ -48,15 +48,15 @@ export default function BlogForm({ onMessage, onNewBlog }) {
       <form onSubmit={handleCreate}>
         <div>
           <label htmlFor="title">title:</label>
-          <input value={title} onChange={({ target }) => setTitle(target.value)} />
+          <input value={title} onChange={({ target }) => setTitle(target.value)} placeholder='write the title'/>
         </div>
         <div>
           <label htmlFor="author">author:</label>
-          <input value={author} onChange={({ target }) => setAuthor(target.value)} />
+          <input value={author} onChange={({ target }) => setAuthor(target.value)} placeholder='write the author'/>
         </div>
         <div>
           <label htmlFor="url">url:</label>
-          <input value={url} onChange={({ target }) => setUrl(target.value)} />
+          <input value={url} onChange={({ target }) => setUrl(target.value)} placeholder='write the url'/>
         </div>
         <button type='submit'>create</button>
       </form>
