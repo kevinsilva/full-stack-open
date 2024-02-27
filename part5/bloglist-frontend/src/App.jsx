@@ -61,10 +61,10 @@ const App = () => {
           <BlogForm onMessage={(message) => setMessage(message)} onNewBlog={(blog) => {
             setBlogs(blogs.concat(blog))
             blogFormRef.current.toggleVisibility()
-            }} />
+          }} />
         </Toggable>
         <BlogList blogs={blogs} userInfo={user.name} onMessage={(message) => setMessage(message)}/>
-        </>}
+      </>}
     </div>
   )
 }
