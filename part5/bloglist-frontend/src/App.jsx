@@ -34,11 +34,11 @@ const App = () => {
         const blogs = await blogService.getAll();
         setBlogs(blogs);
       } catch (error) {
-        onMessage({
+        setMessage({
           text: 'error fetching blogs',
           class: 'error'
         })
-        setTimeout(() => onMessage({
+        setTimeout(() => setMessage({
           text: null,
           class: null
         }), 5000)
