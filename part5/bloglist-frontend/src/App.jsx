@@ -44,7 +44,7 @@ const App = () => {
       }
     }
     fetchData()
-  }, [user])
+  }, [blogs])
 
 
   return (
