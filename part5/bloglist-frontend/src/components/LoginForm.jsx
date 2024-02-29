@@ -29,16 +29,16 @@ export default function LoginForm({ onUserChange, onMessage }) {
 
   return (
     <>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} id='login-form'>
         <div>
           <label htmlFor="Username">Username</label>
-          <input type="text" value={username} name='Username' onChange={({ target }) => setUsername(target.value)} required/>
+          <input type="text" value={username} name='Username' onChange={({ target }) => setUsername(target.value)} id='username' required/>
         </div>
         <div>
           <label htmlFor="Password">Password</label>
-          <input type="password" value={password} name='Password' onChange={({ target }) => setPassword(target.value)} required/>
+          <input type="password" value={password} name='Password' onChange={({ target }) => setPassword(target.value)} id='password' required/>
         </div>
-        <button type='submit'>Login</button>
+        <button type='submit' id='login-button'>Login</button>
       </form>
     </>
   )
