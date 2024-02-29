@@ -2,8 +2,8 @@ describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
     cy.request('POST', 'http://localhost:3003/api/users/', { username: 'test', name: 'test', password: 'test' })
+    cy.request('POST', 'http://localhost:3003/api/users/', { username: 'mluukkai', name: 'Matti Luukkainen', password: 'salainen' })
     cy.visit('')
-    // cy.login({ username: 'test', password: 'test' })
   })
   it('login form is shown', function() {
     cy.contains('log in to application')
@@ -49,6 +49,47 @@ describe('Blog app', function() {
         .should('contain', 'a new blog a title by an author added')
         .should('have.css', 'color', 'rgb(0, 128, 0)')
         .should('have.css', 'border-style', 'solid')
+    })
+    describe('and a blog exists', function() {
+      beforeEach(function() {
+        cy.createBlog({
+          title: 'another title',
+          author: 'another author',
+          url: 'another url',
+          likes: 0
+        })
+        cy.login({ username: 'mluukkai', password: 'salainen' })
+        cy.createBlog({
+          title: 'a note created by cypress',
+          author: 'Matti Luukkainen',
+          url: 'mattiluukkainen.com',
+          likes: 3
+        })
+      })
+      it('a blog can be liked', function() {
+        cy.contains('another title').parent().find('button').as('viewButton')
+        cy.get('@viewButton').click()
+        cy.contains('0 likes')
+        cy.get('@viewButton').parent().should('contain', 'like')
+        cy.get('#like-button').click()
+        cy.contains('1 likes')
+      })
+      it('a blog can be removed by the author', function() {
+        cy.contains('another title').parent().find('button').as('firstViewButton')
+        cy.get('@firstViewButton').click()
+        cy.get('@firstViewButton').should('not.contain', 'remove')
+
+        cy.contains('a note created by cypress').parent().find('button').as('secondViewButton')
+        cy.get('@secondViewButton').click()
+        cy.get('@secondViewButton').parent().should('contain', 'remove')
+        cy.get('#remove-button').click()
+        cy.window().then($window => $window.confirm(true))
+        cy.contains('a note created by cypress').should('not.exist', { timeout: 5000 })
+      })
+      it('blogs are ordered by number of likes', function() {
+        cy.get('.blog-style:first').should('contain', 'a note created by cypress')
+        cy.get('.blog-style:last').should('contain', 'another title')
+      })
     })
   })
 })

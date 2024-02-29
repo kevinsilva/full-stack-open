@@ -41,9 +41,9 @@ const Blog = ({ blog, userInfo, onMessage }) => {
       <button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'hide' : 'view'}</button>
       {showDetails && <div>
         <div>{blog.url}</div>
-        <div>{blog.likes} likes <button onClick={handleLike}>like</button></div>
+        <div>{blog.likes} likes <button onClick={handleLike} id='like-button'>like</button></div>
         <div>{blog.user.name}</div>
-        {userInfo === blog.user.name && <button onClick={handleRemove}>remove</button>}
+        {userInfo === blog.user.name && <button onClick={handleRemove} id='remove-button'>remove</button>}
       </div>}
     </div>
 
