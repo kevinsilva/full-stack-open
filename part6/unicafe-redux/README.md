@@ -1,6 +1,6 @@
 # Unicafe-Redux
 
-Let's make a simplified version of the unicafe exercise from part 1. Let's handle the state management with Redux.
+A simplified version of the unicafe exercise from part 1 with redux as state management.
 
 ## Development
 
