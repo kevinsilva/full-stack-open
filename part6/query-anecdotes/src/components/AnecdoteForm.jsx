@@ -10,8 +10,19 @@ const AnecdoteForm = () => {
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
     onSuccess: (_, newAnecdote) => {
+      if (newAnecdote.content.length < 3) throw Error('merda')
       const anecdotes = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
+      notificationDispatch({
+        type: 'ADD_NOTIFICATION',
+        message: `anecdote '${newAnecdote.content}' created`,
+      })
+    },
+    onError: (err) => {
+      notificationDispatch({
+        type: 'ADD_NOTIFICATION',
+        message: 'too short anecdote, must have length 5 or more',
+      })
     },
   })
 
@@ -20,10 +31,6 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({ content })
-    notificationDispatch({
-      type: 'ADD_NOTIFICATION',
-      message: `anecdote ${content} created`,
-    })
   }
 
   return (
