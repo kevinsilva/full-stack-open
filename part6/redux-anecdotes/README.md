@@ -1,6 +1,6 @@
 # Redux-Anecdotes
 
-Let's make a new version of the anecdote voting application from part 1.
+A new version of the anecdote voting application from part 1 using redux and redux toolkit as state management.
 
 ## Development
 

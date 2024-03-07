@@ -1,8 +1,13 @@
-# React + Vite
+# Query-Anecdotes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A new version of the anecdote application that uses React Query Library and React Context for state management.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To start the application:
+
+```bash
+cd query-anecdotes
+npm install
+npm run dev
+```

@@ -6,4 +6,6 @@ So far, we have placed the application's state and state logic directly inside R
 
 We'll learn about the lightweight version of Redux directly supported by React, namely the React context and useRedux hook, as well as the React Query library that simplifies the server state management.
 
-- **6.1-:** [bloglist-frontend](./bloglist-frontend/)
+- **6.1-:6.2** [unicafe-redux](./unicafe-redux/)
+- **6.3-:6.19** [redux-anecdotes](./redux-anecdotes/)
+- **6.20-:6.24** [query-anecdotes](./query-anecdotes/)
