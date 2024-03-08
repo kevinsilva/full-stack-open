@@ -1,9 +1,9 @@
 import { useField } from '../hooks'
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
+  const { clear: clearContent, ...content } = useField('text')
+  const { clear: clearAuthor, ...author } = useField('text')
+  const { clear: clearInfo, ...info } = useField('text')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -13,6 +13,12 @@ const CreateNew = (props) => {
       info: info.value,
       votes: 0,
     })
+  }
+
+  const handleClear = () => {
+    clearContent()
+    clearAuthor()
+    clearInfo()
   }
 
   return (
@@ -31,7 +37,10 @@ const CreateNew = (props) => {
           url for more info
           <input name='info' {...info} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button type='reset' onClick={handleClear}>
+          clear
+        </button>
       </form>
     </div>
   )
