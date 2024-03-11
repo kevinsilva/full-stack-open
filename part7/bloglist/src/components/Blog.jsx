@@ -2,6 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../redux/reducers/notificationReducer'
+import { likeBlog } from '../redux/reducers/blogReducer'
 
 const Blog = ({ blog, userInfo }) => {
     const [showDetails, setShowDetails] = useState(false)
@@ -10,7 +11,8 @@ const Blog = ({ blog, userInfo }) => {
     const handleLike = async () => {
         const newBlogLike = { ...blog, likes: blog.likes + 1 }
         try {
-            await blogService.update(newBlogLike)
+            // await blogService.update(newBlogLike)
+            dispatch(likeBlog(blog))
             dispatch(
               setNotification({
                   text: `the blog ${blog.title} by ${blog.author} was liked`,
