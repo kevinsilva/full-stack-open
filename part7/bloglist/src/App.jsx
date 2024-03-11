@@ -40,8 +40,8 @@ const App = () => {
                 )
             }
         }
-        fetchData()
-    }, [blogs])
+        if (user) fetchData()
+    }, [blogs, user])
 
     return (
         <div>

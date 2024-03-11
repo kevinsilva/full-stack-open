@@ -11,6 +11,12 @@ const Blog = ({ blog, userInfo }) => {
         const newBlogLike = { ...blog, likes: blog.likes + 1 }
         try {
             await blogService.update(newBlogLike)
+            dispatch(
+              setNotification({
+                  text: `the blog ${blog.title} by ${blog.author} was liked`,
+                  class: 'success',
+              })
+          )
         } catch (error) {
             dispatch(
                 setNotification({ text: 'error adding like', class: 'error' })
@@ -21,7 +27,16 @@ const Blog = ({ blog, userInfo }) => {
     const handleRemove = async () => {
         if (window.confirm('Are you sure you want to remove this blog?')) {
             try {
+                const blogTitle = blog.title
+                const blogAuthor = blog.author
+
                 await blogService.remove(blog.id)
+                dispatch(
+                  setNotification({
+                      text: `the blog ${blogTitle} by ${blogAuthor} was removed`,
+                      class: 'success',
+                  })
+              )
             } catch (error) {
                 dispatch(
                     setNotification({
