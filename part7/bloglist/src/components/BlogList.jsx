@@ -1,10 +1,13 @@
+import { useSelector } from 'react-redux'
 import Blog from './Blog'
 
-export default function BlogList({ blogs, userInfo }) {
+export default function BlogList({ userInfo }) {
+  const blogs = useSelector((state) => state.blogs)
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
+
     return (
         <div className="blog-list">
-            {blogs
-                .sort((a, b) => b.likes - a.likes)
+            {sortedBlogs
                 .map((blog) => (
                     <Blog key={blog.id} blog={blog} userInfo={userInfo} />
                 ))}

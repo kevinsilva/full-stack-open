@@ -2,6 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../redux/reducers/notificationReducer'
+import { createBlog } from '../redux/reducers/blogReducer'
 
 export default function BlogForm({ onNewBlog }) {
     const [title, setTitle] = useState('')
@@ -18,8 +19,8 @@ export default function BlogForm({ onNewBlog }) {
         }
         const addBlog = async () => {
             try {
-                const newBlog = await blogService.create(blog)
-                onNewBlog(newBlog)
+                dispatch(createBlog(blog))
+                onNewBlog()
                 dispatch(
                     setNotification({
                         text: `a new blog ${blog.title} by ${blog.author} added`,

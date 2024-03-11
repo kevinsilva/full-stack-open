@@ -9,6 +9,7 @@ import blogService from './services/blogs'
 import Title from './components/Title'
 import { Toggable } from './components/Toggable'
 import { setNotification } from './redux/reducers/notificationReducer'
+import { initializeBlogs } from './redux/reducers/blogReducer'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
@@ -27,21 +28,17 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const blogs = await blogService.getAll()
-                setBlogs(blogs)
-            } catch (error) {
-                dispatch(
-                    setNotification({
-                        text: 'error fetching blogs',
-                        class: 'error',
-                    })
-                )
-            }
-        }
-        if (user) fetchData()
-    }, [blogs, user])
+      try {
+        if (user) dispatch(initializeBlogs())
+      } catch(error) {
+        dispatch(
+          setNotification({
+              text: 'error fetching blogs',
+              class: 'error',
+          })
+       )
+      }
+    },[dispatch, user])
 
     return (
         <div>
@@ -55,13 +52,12 @@ const App = () => {
                     <LogoutButton user={user} onLogout={() => setUser(null)} />
                     <Toggable buttonLabel="new blog" ref={blogFormRef}>
                         <BlogForm
-                            onNewBlog={(blog) => {
-                                setBlogs(blogs.concat(blog))
+                            onNewBlog={() => {
                                 blogFormRef.current.toggleVisibility()
                             }}
                         />
                     </Toggable>
-                    <BlogList blogs={blogs} userInfo={user.name} />
+                    <BlogList userInfo={user.name} />
                 </>
             )}
         </div>
