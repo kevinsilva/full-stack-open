@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from '../redux/reducers/notificationReducer'
 import { likeBlog, removeBlog } from '../redux/reducers/blogReducer'
 
-const Blog = ({ blog, userInfo }) => {
+const Blog = ({ blog }) => {
     const [showDetails, setShowDetails] = useState(false)
+    const userName = useSelector((state) => state.user.userData.name)
     const dispatch = useDispatch()
 
     const handleLike = async () => {
@@ -65,7 +66,7 @@ const Blog = ({ blog, userInfo }) => {
                         </button>
                     </div>
                     <div>{blog.user.name}</div>
-                    {userInfo === blog.user.name && (
+                    {userName === blog.user.name && (
                         <button onClick={handleRemove} id="remove-button">
                             remove
                         </button>

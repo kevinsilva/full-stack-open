@@ -1,8 +1,12 @@
-export default function LogoutButton({ user, onLogout }) {
+import { useDispatch, useSelector } from "react-redux"
+import { logoutUser } from "../redux/reducers/userReducer"
+
+export default function LogoutButton() {
+  const user = useSelector((state) => state.user.userData)
+  const dispatch = useDispatch()
 
   const handleLogout = () => {
-    onLogout()
-    window.localStorage.removeItem('loggedUser')
+    dispatch(logoutUser())
   }
 
   return (
