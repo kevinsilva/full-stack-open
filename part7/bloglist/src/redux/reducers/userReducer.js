@@ -4,7 +4,7 @@ import blogService, { setToken } from '../../services/blogs'
 import loginService from '../../services/login'
 
 const initialState = {
-  userData: null
+  userData: null,
 }
 
 const userSlice = createSlice({
@@ -47,7 +47,6 @@ export const loginUser = ({ username, password }) => {
         })
       )
     }
-
   }
 }
 

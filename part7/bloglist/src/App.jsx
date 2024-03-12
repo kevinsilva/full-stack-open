@@ -1,21 +1,19 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import BlogList from './components/BlogList'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
-import Notification from './components/Notification'
-import LogoutButton from './components/LogoutButton'
-import Title from './components/Title'
-import { Toggable } from './components/Toggable'
 import { setNotification } from './redux/reducers/notificationReducer'
 import { initializeBlogs } from './redux/reducers/blogReducer'
 import { getUser } from './redux/reducers/userReducer'
+import Header from './components/Header'
+import Home from './components/Home'
+import Users from './components/Users'
+import { Routes, Route, Link } from 'react-router-dom'
+
 
 const App = () => {
     const user = useSelector((state) => state.user.userData)
     const blogs = useSelector((state) => state.blogs)
     const dispatch = useDispatch()
-    const blogFormRef = useRef()
+
 
     useEffect(() => {
         dispatch(getUser())
@@ -36,22 +34,13 @@ const App = () => {
 
     return (
         <div>
-            <Title user={user} />
-            <Notification />
-            {!user && <LoginForm />}
-            {user && (
-                <>
-                    <LogoutButton user={user} />
-                    <Toggable buttonLabel="new blog" ref={blogFormRef}>
-                        <BlogForm
-                            onNewBlog={() => {
-                                blogFormRef.current.toggleVisibility()
-                            }}
-                        />
-                    </Toggable>
-                    <BlogList userInfo={user.name} />
-                </>
-            )}
+            <Header />
+            <Routes>
+                <Route path='/' element={<Home />}></Route>
+                <Route path='/users' element={<Users />}></Route>
+            </Routes>
+
+
         </div>
     )
 }
