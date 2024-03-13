@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import Blog from './Blog'
+import BlogPreview from './BlogPreview'
 
 export default function BlogList() {
   const blogs = useSelector((state) => state.blogs)
@@ -7,9 +7,9 @@ export default function BlogList() {
 
     return (
         <div className="blog-list">
-            {sortedBlogs
+            {sortedBlogs && sortedBlogs
                 .map((blog) => (
-                    <Blog key={blog.id} blog={blog} />
+                    <BlogPreview key={blog.id} blog={blog} />
                 ))}
         </div>
     )

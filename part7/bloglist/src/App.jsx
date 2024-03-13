@@ -7,13 +7,13 @@ import Header from './components/Header'
 import Home from './components/Home'
 import Users from './components/Users'
 import User from './components/User'
+import BlogPost from './components/BlogPost'
 import { Routes, Route, useMatch } from 'react-router-dom'
-import { getAllUsers } from './redux/reducers/usersReducer'
+
 
 
 const App = () => {
     const loggedUser = useSelector((state) => state.user.userData)
-    const users = useSelector((state) => state.users.usersData)
     const blogs = useSelector((state) => state.blogs)
     const dispatch = useDispatch()
 
@@ -42,6 +42,7 @@ const App = () => {
                 <Route path='/' element={<Home />}></Route>
                 <Route path='/users' element={<Users />}></Route>
                 <Route path='/users/:id' element={<User />}></Route>
+                <Route path='/blogs/:id' element={<BlogPost />}></Route>
             </Routes>
 
 

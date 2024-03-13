@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Blog from '../components/Blog'
+import BlogPreview from '../components/BlogPreview'
 import blogService from '../services/blogs'
 
-describe('Blog', () => {
+describe('BlogPreview', () => {
     test('renders blog title and author but not url or likes', () => {
         const blog = {
             title: 'random title',
@@ -13,7 +13,7 @@ describe('Blog', () => {
             likes: 0,
         }
 
-        render(<Blog blog={blog} />)
+        render(<BlogPreview blog={blog} />)
         const element = screen.getByText(/random title/i)
 
         expect(element).toBeDefined()
@@ -32,7 +32,7 @@ describe('Blog', () => {
             },
         }
         render(
-            <Blog
+            <BlogPreview
                 blog={blog}
                 userInfo={{ name: 'random name' }}
                 onMessage={jest.fn()}
@@ -61,7 +61,7 @@ describe('Blog', () => {
         }
 
         render(
-            <Blog
+            <BlogPreview
                 blog={blog}
                 userInfo={{ name: 'random name' }}
                 onMessage={jest.fn()}
