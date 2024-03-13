@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllUsers } from "../redux/reducers/usersReducer"
+import { Link } from "react-router-dom"
 
 export default function Users() {
   const users = useSelector((state) => state.users.usersData)
   const dispatch = useDispatch()
 
+
   useEffect(() => {
-    dispatch(getAllUsers());
-  }, [dispatch])
+    if (!users) dispatch(getAllUsers());
+  }, [dispatch, users])
 
   if (!users) return <p>loading...</p>
+
 
   return (
     <div>
@@ -25,7 +28,7 @@ export default function Users() {
         <tbody>
         {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
               <td>{user.blogs.length}</td>
             </tr>
           ))}
