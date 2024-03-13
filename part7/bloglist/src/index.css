@@ -27,3 +27,14 @@
 #remove-button {
   margin-top: 10px;
 }
+
+nav {
+  background-color: lightgray;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+nav * {
+  margin-right: 5px;
+}
