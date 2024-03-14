@@ -6,7 +6,14 @@ const mongoose = require('mongoose');
 blogsRouter.get('/', async (_request, response) => {
   const blogs = await Blog
     .find({})
-    .populate('user', { username: 1, name: 1, id: 1 });
+    .populate({
+      path: 'user',
+      select: 'username name id'
+    })
+    .populate({
+      path: 'comments',
+      select: 'content'
+    });
 
     response.json(blogs);
 });
