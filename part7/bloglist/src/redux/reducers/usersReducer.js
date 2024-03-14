@@ -20,7 +20,6 @@ export const getAllUsers = () => {
     try {
       const users = await usersService.getAll()
       dispatch(setUsers(users))
-      console.log(users)
     } catch(error) {
       console.error(error)
     }

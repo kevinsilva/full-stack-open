@@ -21,6 +21,9 @@ const blogSlice = createSlice({
     popBlog(state, action) {
       const id = action.payload.id
       return state.filter((b) => b.id  !== id)
+    },
+    pushComment(state, action) {
+      state.push(action.payload)
     }
   }
 })
@@ -53,5 +56,12 @@ export const removeBlog = (id) => {
   }
 }
 
-export const { setBlogs, pushBlog, like, popBlog } = blogSlice.actions
+export const addComment = (blogId, comment) => {
+  return async (dispatch) => {
+    const newComment = await blogService.addComment(blogId, { content: comment })
+    dispatch(pushComment(newComment))
+  }
+}
+
+export const { setBlogs, pushBlog, like, popBlog, pushComment } = blogSlice.actions
 export default blogSlice.reducer

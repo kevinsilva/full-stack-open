@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
-import { likeBlog } from "../redux/reducers/blogReducer"
-import { removeBlog } from "../redux/reducers/blogReducer"
+import { likeBlog, removeBlog, addComment } from "../redux/reducers/blogReducer"
 import { setNotification } from "../redux/reducers/notificationReducer"
 import { useNavigate } from "react-router-dom";
 
@@ -56,6 +55,38 @@ export default function BlogPost() {
   }
   }
 
+  const handleComment = async (event) => {
+    event.preventDefault()
+    try {
+        const comment = event.target.comment.value
+        event.target.comment.value = ''
+        if (!comment) throw new Error('empty comment')
+        dispatch(addComment(blog.id, comment))
+        dispatch(
+          setNotification({
+              text: `comment added`,
+              class: 'success',
+          })
+        )
+    } catch(error) {
+      if (error.message === 'empty comment') {
+        dispatch(
+            setNotification({
+                text: 'empty comment',
+                class: 'error',
+            })
+        )
+      } else {
+        dispatch(
+            setNotification({
+                text: 'error adding comment',
+                class: 'error',
+            })
+        )
+      }
+    }
+  }
+
   return (
     <>
     {blog && (
@@ -71,6 +102,20 @@ export default function BlogPost() {
                             remove
                         </button>
                     )}
+        {blog.comments && (
+        <div>
+          <h3>Comments</h3>
+          <form onSubmit={handleComment}>
+            <input name="comment" />
+            <button type="submit">add comment</button>
+          </form>
+          <ul>
+            {blog.comments.map((comment) => (
+              <li key={comment.id}>{comment.content}</li>
+            ))}
+          </ul>
+        </div>
+        )}
       </div>
     )}
     </>
