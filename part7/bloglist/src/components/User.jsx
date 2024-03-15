@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import { List, ListItem, Typography } from "@mui/material";
 
 export default function User() {
   const { id } = useParams();
@@ -12,13 +13,13 @@ export default function User() {
     <div>
       {user && (
         <div>
-          <h2>{user.name}</h2>
-          <h3>Added blogs</h3>
-          <ul>
+          <Typography variant="h4">{user.name}</Typography>
+          <Typography variant="h6" sx={{ marginTop: "10px", color: "gray" }}>Added blogs</Typography>
+          <List>
             {user.blogs.map(blog => (
-              <li key={blog.id}>{blog.title}</li>
+              <ListItem key={blog.id}>{blog.title}</ListItem>
             ))}
-          </ul>
+          </List>
         </div>
       )}
     </div>

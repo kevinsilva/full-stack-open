@@ -18,7 +18,7 @@ export default function LoginForm() {
     }
 
     return (
-        <Paper elevation={3} sx={{ padding: '50px 100px'}}>
+        <Paper elevation={3} sx={{ padding: '50px 100px', marginTop: '50px', textAlign: 'center'}}>
             <form onSubmit={handleLogin} id="login-form">
                 <TextField label="Username" value={username} onChange={({ target }) => setUsername(target.value)} size='small' margin='normal' fullWidth required/>
 
