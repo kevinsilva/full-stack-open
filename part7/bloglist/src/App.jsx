@@ -9,9 +9,7 @@ import Users from './components/Users'
 import User from './components/User'
 import BlogPost from './components/BlogPost'
 import { Routes, Route, Navigate } from 'react-router-dom'
-
-
-
+import { Container } from '@mui/material'
 
 const App = () => {
     const loggedUser = useSelector((state) => state.user.userData)
@@ -39,14 +37,14 @@ const App = () => {
     return (
         <div>
             <Header />
-            <Routes>
-                <Route path='/' element={<Home />}></Route>
-                <Route path='/users' element={loggedUser ? <Users /> : <Navigate replace to="/" />}></Route>
-                <Route path='/users/:id' element={<User />}></Route>
-                <Route path='/blogs/:id' element={<BlogPost />}></Route>
-            </Routes>
-
-
+            <Container>
+              <Routes>
+                  <Route path='/' element={<Home />}></Route>
+                  <Route path='/users' element={loggedUser ? <Users /> : <Navigate replace to="/" />}></Route>
+                  <Route path='/users/:id' element={<User />}></Route>
+                  <Route path='/blogs/:id' element={<BlogPost />}></Route>
+              </Routes>
+            </Container>
         </div>
     )
 }

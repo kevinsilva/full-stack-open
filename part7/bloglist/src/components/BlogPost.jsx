@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { likeBlog, removeBlog, addComment } from "../redux/reducers/blogReducer"
 import { setNotification } from "../redux/reducers/notificationReducer"
 import { useNavigate } from "react-router-dom";
+import { Typography, Link, Button, Box, ListItem, List, TextField, Paper, Divider } from "@mui/material";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 export default function BlogPost() {
   const { id } = useParams();
@@ -90,31 +92,38 @@ export default function BlogPost() {
   return (
     <>
     {blog && (
-      <div>
-        <h2>{blog.title}</h2>
-        <a href={blog.url} target="_blank">
+      <div className="blog">
+        <Typography variant="h4" sx={{marginBottom: '25px'}}>{blog.title}</Typography>
+        <Link href={blog.url} target="_blank" underline="none" rel="noopener">
           {blog.url}
-        </a>
-        <div>{blog.likes} likes <button onClick={handleLike}>like</button></div>
-        <div>added by {blog.author}</div>
-        {userName === blog.user.name && (
-                        <button onClick={handleRemove} id="remove-button">
-                            remove
-                        </button>
+        </Link>
+        <Typography sx={{marginTop: '5px'}}>added by {blog.author}</Typography>
+        <Box sx={{ display: 'flex', alignSelf: 'flex-end' }}>
+          <Button variant="contained" onClick={handleLike} sx={{ alignSelf: 'flex-start' }}>
+            <Typography>{blog.likes} likes</Typography>
+          </Button>
+          {userName === blog.user.name && (
+                        <Button variant="text" onClick={handleRemove} id="remove-button">
+                            delete post
+                        </Button>
                     )}
+          </Box>
         {blog.comments && (
-        <div>
-          <h3>Comments</h3>
-          <form onSubmit={handleComment}>
-            <input name="comment" />
-            <button type="submit">add comment</button>
+        <Box mt={2} >
+          <Typography variant="h5" sx={{marginBottom: '25px'}}>Comments</Typography>
+          <form onSubmit={handleComment} id="comment-form">
+            <TextField label="write comment" name="comment" />
+            <Button type="submit" variant="text" sx={{ alignSelf: 'flex-end' }}>Add Comment</Button>
           </form>
-          <ul>
+          <List>
             {blog.comments.map((comment) => (
-              <li key={comment.id}>{comment.content}</li>
+                <div key={comment.id}>
+                <ListItem key={comment.id}>{comment.content}</ListItem>
+                <Divider />
+                </div>
             ))}
-          </ul>
-        </div>
+          </List>
+        </Box>
         )}
       </div>
     )}

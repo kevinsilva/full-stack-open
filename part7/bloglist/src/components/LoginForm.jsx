@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../redux/reducers/userReducer'
+import { Button, TextField, Paper } from '@mui/material'
+
 
 export default function LoginForm() {
     const [username, setUsername] = useState('')
@@ -16,35 +18,15 @@ export default function LoginForm() {
     }
 
     return (
-        <>
+        <Paper elevation={3} sx={{ padding: '50px 100px'}}>
             <form onSubmit={handleLogin} id="login-form">
-                <div>
-                    <label htmlFor="Username">Username</label>
-                    <input
-                        type="text"
-                        value={username}
-                        name="Username"
-                        onChange={({ target }) => setUsername(target.value)}
-                        id="username"
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="Password">Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        name="Password"
-                        onChange={({ target }) => setPassword(target.value)}
-                        id="password"
-                        required
-                    />
-                </div>
-                <button type="submit" id="login-button">
-                    Login
-                </button>
+                <TextField label="Username" value={username} onChange={({ target }) => setUsername(target.value)} size='small' margin='normal' fullWidth required/>
+
+                <TextField label="Password" value={password} onChange={({ target }) => setPassword(target.value)} size='small' margin='normal' fullWidth required sx={{ marginBottom: '50px' }}/>
+
+                <Button variant='contained' color='primary' type='submit' disableElevation>Login</Button>
             </form>
-        </>
+        </Paper>
     )
 }
 

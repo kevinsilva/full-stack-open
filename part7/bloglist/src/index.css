@@ -1,3 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.appbar-link {
+  text-decoration: none;
+  color: black;
+  opacity: 0.8;
+}
+
+.appbar-link:hover {
+  opacity: 1;
+}
+
+.appbar-link:not(:last-child) {
+  margin-right: 10px;
+}
+
+.title {
+  text-align: center;
+  position: relative;
+  top: 300%;
+}
+
+
 .error {
   color: red;
   background: lightgrey;
@@ -19,13 +46,38 @@
 }
 
 .blog-style {
-  padding: 10px 0 0 2px;
-  border: 1px solid black;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.blog-style:hover div h6 {
+  color: black;
+}
+
+.link {
+  text-decoration: none;
 }
 
 #remove-button {
-  margin-top: 10px;
+  margin-left: 10px;
+  background-color: black  ;
+  color: white;
+  align-self: flex-end;
+}
+
+#comment-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.blog {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.blog * {
+  margin-bottom: 30px;
 }
 
 nav {

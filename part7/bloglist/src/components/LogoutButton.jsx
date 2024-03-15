@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../redux/reducers/userReducer"
+import { Typography, Button } from "@mui/material"
 
 export default function LogoutButton() {
   const user = useSelector((state) => state.user.userData)
@@ -11,7 +12,10 @@ export default function LogoutButton() {
 
   return (
     <>
-      {user && <div>{user.name} logged in <button onClick={handleLogout}>logout</button></div>}
+      {user && <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+        <Typography sx={{ marginRight: '10px' }}>{user.name} logged in</Typography>
+        <Button variant='text' onClick={handleLogout}>logout</Button>
+        </div>}
     </>
   )
 }

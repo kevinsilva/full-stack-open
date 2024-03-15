@@ -1,7 +1,12 @@
-import React from 'react'
+import { Typography, Container } from "@mui/material"
+
 
 export default function Title({ user }) {
   return (
-    <h1>{user ? 'blog app' : 'log in to application'}</h1>
+    <Container>
+      <Typography variant='h4' component='h1' gutterBottom sx={{ textAlign: 'center', marginTop: '100px' }}>
+        {user ? 'blog app' : 'log in to application'}
+      </Typography>
+    </Container>
   )
 }

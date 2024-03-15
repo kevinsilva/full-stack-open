@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../redux/reducers/notificationReducer'
 import { createBlog } from '../redux/reducers/blogReducer'
+import { Paper, Typography, TextField, Button } from '@mui/material'
 
 export default function BlogForm({ onNewBlog }) {
     const [title, setTitle] = useState('')
@@ -43,35 +43,14 @@ export default function BlogForm({ onNewBlog }) {
     }
 
     return (
-        <div>
-            <h2>create new</h2>
+        <Paper elevation={3} sx={{ padding: '50px 100px', textAlign: 'center'}}>
+            <Typography variant='h5' color={'textSecondary'}>create new</Typography>
             <form onSubmit={handleCreate}>
-                <div>
-                    <label htmlFor="title">title:</label>
-                    <input
-                        value={title}
-                        onChange={({ target }) => setTitle(target.value)}
-                        placeholder="write the title"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="author">author:</label>
-                    <input
-                        value={author}
-                        onChange={({ target }) => setAuthor(target.value)}
-                        placeholder="write the author"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="url">url:</label>
-                    <input
-                        value={url}
-                        onChange={({ target }) => setUrl(target.value)}
-                        placeholder="write the url"
-                    />
-                </div>
-                <button type="submit">create</button>
+            <TextField label="title" value={title} onChange={({ target }) => setTitle(target.value)} size='small' margin='normal' fullWidth required/>
+            <TextField label="author" value={author} onChange={({ target }) => setAuthor(target.value)} size='small' margin='normal' fullWidth required/>
+            <TextField label="url" value={url} onChange={({ target }) => setUrl(target.value)} size='small' margin='normal' fullWidth required/>
+            <Button variant='contained' color='primary' type='submit' sx={{ marginTop: '20px' }} disableElevation>create</Button>
             </form>
-        </div>
+        </Paper>
     )
 }
