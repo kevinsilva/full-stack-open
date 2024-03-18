@@ -1,24 +1,23 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 
 const App = () => {
-  const [page, setPage] = useState('authors')
-
-
   return (
-    <div>
-      <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
-      </div>
+    <Router>
+        <div style={{marginBottom: '30px'}}>
+          <Link to="/" style={{ marginRight: '10px' }}>authors</Link>
+          <Link to="/books"style={{ marginRight: '10px' }}>books</Link>
+          <Link to="/add">add book</Link>
+        </div>
 
-      <Authors show={page === 'authors'} />
-      <Books show={page === 'books'} />
-      <NewBook show={page === 'add'} />
-    </div>
+        <Routes>
+          <Route path='/' element={<Authors />}/>
+          <Route path='/books' element={<Books />}/>
+          <Route path='/add' element={<NewBook />}/>
+        </Routes>
+    </Router>
   )
 }
 
