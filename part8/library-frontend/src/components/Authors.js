@@ -1,7 +1,8 @@
 import { useQuery } from "@apollo/client"
 import { ALL_AUTHORS } from "../queries"
+import UpdateForm from "./UpdateForm"
 
-const Authors = (props) => {
+const Authors = ({ setError }) => {
   const { loading, data } = useQuery(ALL_AUTHORS)
 
   if (loading) return <div>loading...</div>
@@ -25,6 +26,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <UpdateForm setError={setError}/>
     </div>
   )
 }
