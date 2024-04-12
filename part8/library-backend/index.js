@@ -1,6 +1,6 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-const { graphQLError } = require('@apollo/server/standalone')
+const { GraphQLError } = require('graphql')
 const { v1: uuid } = require('uuid')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
@@ -146,11 +146,9 @@ const resolvers = {
       if (args.author) {
         console.log(args.author)
         const author = await Author.findOne({ name: args.author })
-        console.log(author)
         if (!author) return [];
 
         query = { author: author._id }
-        console.log(query)
       }
 
       if (args.genre) {
@@ -163,22 +161,38 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (_, args) => {
-      let author = await Author.findOne({ name: args.author })
+      try {
+          let author = await Author.findOne({ name: args.author })
 
-      if (!author) {
-        const newAuthor = new Author({ name: args.author })
-        await newAuthor.save()
-        author = await Author.findOne({ name: args.author })
+          if (!author) {
+            const newAuthor = new Author({ name: args.author })
+            await newAuthor.save()
+            author = await Author.findOne({ name: args.author })
+          }
+
+          const book = new Book({ ...args, author: author })
+          return book.save()
+      } catch (error) {
+        throw new GraphQLError('Adding book failed', { extension: {
+          code: 'BAD_USER_INPUT',
+          invalidArgs: args
+        } })
       }
 
-      const book = new Book({ ...args, author: author })
-      return book.save()
     },
     editAuthor: async (root, args) => {
-      const author = await Author.findOne({ name: args.name })
-      if (!author) return null;
+      try {
+        const author = await Author.findOne({ name: args.name })
+        if (!author) return null;
 
-      return Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo }, { new: true })
+        return Author.findOneAndUpdate({ name: args.name }, { born: args.setBornTo }, { new: true })
+      } catch(error) {
+        throw new GraphQLError('Editing author failed', { extension: {
+          code: 'BAD_USER_INPUT',
+          invalidArgs: args
+        } })
+      }
+
     }
   }
 }
