@@ -162,18 +162,20 @@ const resolvers = {
   Mutation: {
     addBook: async (_, args) => {
       try {
-          let author = await Author.findOne({ name: args.author })
+        if (args.title.length < 3) throw new Error('Title must be at least 3 characters long')
+        let author = await Author.findOne({ name: args.author })
 
-          if (!author) {
-            const newAuthor = new Author({ name: args.author })
-            await newAuthor.save()
-            author = await Author.findOne({ name: args.author })
-          }
+        if (!author) {
+          if (args.author.length < 4) throw new Error('Author must be at least 3 characters long')
+          const newAuthor = new Author({ name: args.author })
+          await newAuthor.save()
+          author = await Author.findOne({ name: args.author })
+        }
 
-          const book = new Book({ ...args, author: author })
-          return book.save()
+        const book = new Book({ ...args, author: author })
+        return book.save()
       } catch (error) {
-        throw new GraphQLError('Adding book failed', { extension: {
+        throw new GraphQLError(`Adding book failed: ${error.message}`, { extension: {
           code: 'BAD_USER_INPUT',
           invalidArgs: args
         } })
