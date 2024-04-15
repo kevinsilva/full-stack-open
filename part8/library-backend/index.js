@@ -86,7 +86,6 @@ const resolvers = {
       let query = {};
 
       if (args.author) {
-        console.log(args.author)
         const author = await Author.findOne({ name: args.author })
         if (!author) return [];
 
@@ -101,7 +100,6 @@ const resolvers = {
     },
     allAuthors: async () => Author.find({}),
     me: (root, args, context) => {
-      console.log(context)
       return context.currentUser
     }
   },
