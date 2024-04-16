@@ -13,7 +13,7 @@ export default function LoginForm({ setError, setToken }) {
   })
 
   useEffect(() => {
-    console.log(result)
+    console.log(result.data)
     if (result.data) {
       const token = result.data.login.value
       setToken(token)
@@ -28,7 +28,9 @@ export default function LoginForm({ setError, setToken }) {
     setPassword('')
     setError(null)
 
-    navigate('/')
+    setTimeout(() => {
+      navigate('/')
+    }, 1000)
   }
 
   return (

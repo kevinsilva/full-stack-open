@@ -6,6 +6,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Notify from './components/Notify'
 import LoginForm from './components/LoginForm'
+import Recommendations from './components/Recommendations'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -24,6 +25,7 @@ const App = () => {
           <Link to="/" style={{ marginRight: '10px' }}>authors</Link>
           <Link to="/books" style={{ marginRight: '10px' }}>books</Link>
           { token && <Link to="/add" style={{ marginRight: '10px' }}>add book</Link> }
+          { token && <Link to="/recommendations" style={{ marginRight: '10px' }}>recommend</Link> }
           { !token && <Link to="/login">login</Link> }
           { token && <Link to="/" onClick={logout}>logout</Link> }
         </div>
@@ -35,6 +37,7 @@ const App = () => {
           <Route path='/' element={<Authors setError={(error) => setError(error)}/>}/>
           <Route path='/books' element={<Books />}/>
           <Route path='/add' element={<NewBook setError={(error) => setError(error)}/>}/>
+          <Route path='/recommendations' element={<Recommendations />}/>
           <Route path='/login' element={<LoginForm setError={(error) => setError(error)} setToken={(token) => setToken(token)}/>}/>
         </Routes>
     </Router>
