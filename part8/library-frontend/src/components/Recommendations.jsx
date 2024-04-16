@@ -6,7 +6,8 @@ export default function Recommendations() {
   const { loading: loadingBooks, data: dataBooks } = useQuery(ALL_BOOKS)
 
   if (loading || loadingBooks) return <div>loading...</div>
-  if (!data || !dataBooks) return <div>not logged in</div>
+  if (!data) return <div>not logged in</div>
+  if (!dataBooks) return <div>no books to recommend. please update your favorite genre</div>
 
   const filteredBooks = data && dataBooks.allBooks.filter((book) => book.genres.includes(data.me.favoriteGenre))
 
