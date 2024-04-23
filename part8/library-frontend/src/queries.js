@@ -49,7 +49,9 @@ export const CREATE_BOOK = gql`
       genres: $genres
     ) {
       title,
-      author
+      author {
+        name
+      }
     }
   }
 `

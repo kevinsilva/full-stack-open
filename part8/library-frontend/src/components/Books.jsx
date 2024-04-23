@@ -7,8 +7,13 @@ const Books = (props) => {
   const [getBooksByGenre, { loading, data }] = useLazyQuery(ALL_BOOKS_BY_GENRE)
 
   useEffect(() => {
+    if (data && !bookGenres) {
+      setBookGenres([...new Set(data.allBooks.map((book) => book.genres).flat())])
+    }
+  }, [data, bookGenres])
+
+  useEffect(() => {
     getBooksByGenre()
-    if (!loading && data) setBookGenres([...new Set(data.allBooks.map((book) => book.genres).flat())])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
