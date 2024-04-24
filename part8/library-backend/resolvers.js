@@ -36,6 +36,7 @@ const resolvers = {
     addBook: async (_, args, context) => {
       try {
         if (!context.currentUser) throw new Error('Unauthenticated')
+        if (!args.author || !args.title || !args.published || !args.genres) throw new Error('All fields are required')
         if (args.title.length < 3) throw new Error('Title must be at least 3 characters long')
         let author = await Author.findOne({ name: args.author })
 
