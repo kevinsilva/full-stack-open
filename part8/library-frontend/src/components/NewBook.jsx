@@ -20,7 +20,10 @@ const NewBook = ({ setError }) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
+    if (!title || !author || !published || !genres.length) {
+      setError('all fields are required')
+      return
+    }
     createBook({ variables: { title, author, published, genres } })
 
     setTitle('')

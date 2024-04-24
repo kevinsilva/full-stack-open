@@ -1,18 +1,50 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Notify from './components/Notify'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
+import { BOOK_ADDED, ALL_BOOKS_BY_GENRE } from './queries'
+
+export const updateCache = (cache, query, addedBook) => {
+  const uniqByTitle = (a) => {
+    let seen = new Set()
+    return a.filter((item) => {
+      let k = item.title
+      return seen.has(k) ? false : seen.add(k)
+    })
+  }
+  cache.updateQuery(query, (data) => {
+    console.log(data)
+    const { allBooks } = data || {}
+    if (!allBooks) return data
+    return {
+      allBooks: uniqByTitle(allBooks.concat(addedBook))
+    }
+  })
+}
 
 const App = () => {
   const [token, setToken] = useState(null)
   const [error, setError] = useState(null)
   const client = useApolloClient()
 
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data, client }) => {
+      console.log(data)
+      const addedBook = data.data.bookAdded
+      alert(`added ${addedBook.title} by ${addedBook.author.name}`)
+
+      updateCache(client.cache, { query: ALL_BOOKS_BY_GENRE}, addedBook)
+    },
+    onError: (error) => {
+      console.error('subscription error', error)
+      setError('Subscription error occurred');
+    }
+  })
   const logout = () => {
     setToken(null)
     localStorage.clear()
@@ -35,7 +67,7 @@ const App = () => {
           { token && <Link to="/" onClick={logout}>logout</Link> }
         </div>
         <div>
-          <Notify errorMessage={error}/>
+          <Notify errorMessage={error} resetError={() => setError(null)}/>
         </div>
 
         <Routes>

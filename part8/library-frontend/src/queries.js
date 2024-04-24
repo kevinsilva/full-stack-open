@@ -10,35 +10,38 @@ export const ALL_AUTHORS = gql`
   }
 `
 
+export const BOOK_FRAGMENT = gql`
+  fragment BookDetails on Book {
+    title
+    published
+    author {
+      name
+      born
+      bookCount
+      id
+    }
+    genres
+    id
+  }
+`;
+
 export const ALL_BOOKS = gql`
   query {
     allBooks {
-      title,
-      published
-      author {
-        name,
-        born,
-        bookCount,
-        id
-      }
-      genres,
-      id
+      ...BookDetails
     }
   }
-`
+  ${BOOK_FRAGMENT}
+`;
 
 export const ALL_BOOKS_BY_GENRE = gql`
   query allBooksByGenre($genre: String) {
     allBooks(genre: $genre) {
-      title,
-      published,
-      author {
-        name
-      }
-      genres
+      ...BookDetails
     }
   }
-`
+  ${BOOK_FRAGMENT}
+`;
 
 export const CREATE_BOOK = gql`
   mutation createBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!){
@@ -82,6 +85,17 @@ export const USER = gql`
       username
       favoriteGenre
       id
+    }
+  }
+`
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      author {
+        name
+      }
     }
   }
 `
