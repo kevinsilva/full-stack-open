@@ -51,21 +51,13 @@ const resolvers = {
           await author.save()
         }
 
-        console.log('author:', author)
-
         const book = new Book({ ...args, author: author._id })
         await book.save()
-
-        console.log('book:', book)
 
         author.books.push(book._id)
         await author.save()
 
-        console.log('updated author:', author)
-
         const addedBook = await Book.findOne({ title: book.title }).populate('author')
-
-        console.log('added book:', addedBook)
 
         pubsub.publish('BOOK_ADDED', { bookAdded: addedBook })
 

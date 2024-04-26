@@ -4,7 +4,6 @@ import UpdateForm from "./UpdateForm"
 
 const Authors = ({ setError }) => {
   const { loading, data } = useQuery(ALL_AUTHORS)
-  console.log(data)
   if (loading) return <div>loading...</div>
 
   return (
