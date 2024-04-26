@@ -13,6 +13,7 @@ const typeDefs = `
     name: String!
     born: Int
     bookCount: Int
+    books: [Book!]
     id: ID!
   }
 

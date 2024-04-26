@@ -27,7 +27,7 @@ const resolvers = {
 
       return Book.find(query).populate('author')
     },
-    allAuthors: async () => Author.find({}),
+    allAuthors: async () => Author.find({}).populate('books'),
     me: (root, args, context) => {
       return context.currentUser
     }
@@ -38,20 +38,38 @@ const resolvers = {
         if (!context.currentUser) throw new Error('Unauthenticated')
         if (!args.author || !args.title || !args.published || !args.genres) throw new Error('All fields are required')
         if (args.title.length < 3) throw new Error('Title must be at least 3 characters long')
+        if (args.author.length <= 3) throw new Error('Author must be at least 4 characters long')
+
         let author = await Author.findOne({ name: args.author })
+        console.log('first author:', author)
 
         if (!author) {
-          if (args.author.length < 4) throw new Error('Author must be at least 3 characters long')
-          const newAuthor = new Author({ name: args.author })
-          await newAuthor.save()
-          author = await Author.findOne({ name: args.author })
+          author = new Author({ name: args.author, bookCount: 1 })
+          await author.save()
+        } else {
+          author.bookCount += 1
+          await author.save()
         }
 
-        const book = new Book({ ...args, author: author })
+        console.log('author:', author)
 
-        pubsub.publish('BOOK_ADDED', { bookAdded: book })
+        const book = new Book({ ...args, author: author._id })
+        await book.save()
 
-        return book.save()
+        console.log('book:', book)
+
+        author.books.push(book._id)
+        await author.save()
+
+        console.log('updated author:', author)
+
+        const addedBook = await Book.findOne({ title: book.title }).populate('author')
+
+        console.log('added book:', addedBook)
+
+        pubsub.publish('BOOK_ADDED', { bookAdded: addedBook })
+
+        return addedBook
       } catch (error) {
         throw new GraphQLError(`Adding book failed: ${error.message}`, { extension: {
           code: 'BAD_USER_INPUT',
