@@ -1,4 +1,4 @@
-interface ExerciseResults {
+export interface ExerciseResults {
   periodLength: number,
   trainingDays: number,
   success: boolean,
@@ -8,7 +8,7 @@ interface ExerciseResults {
   average: number,
 }
 
-const calculateExercises = (hours: number[], target: number): ExerciseResults => {
+export const calculateExercises = (hours: number[], target: number): ExerciseResults => {
   const periodLength = hours.length;
   const trainingDays = hours.filter(hour => hour > 0).length;
   const average = hours.reduce((a, b) => a + b, 0) / periodLength;
@@ -32,7 +32,7 @@ const calculateExercises = (hours: number[], target: number): ExerciseResults =>
 };
 
 
-const validateInput = (hours: number[], target: number): boolean => {
+export const validateInput = (hours: number[], target: number): boolean => {
   if (target <= 0 || Number.isNaN(target)) {
     throw new Error('Target must be a positive number');
   }
@@ -48,19 +48,21 @@ const validateInput = (hours: number[], target: number): boolean => {
   return true;
 };
 
-try {
-  if (!process.argv.length || process.argv.length < 4) {
-    throw new Error('Please provide arguments');
-  }
+if (require.main === module) {
+  try {
+    if (!process.argv.length || process.argv.length < 4) {
+      throw new Error('Please provide arguments');
+    }
 
-  const hours = process.argv.slice(3).map(hour => Number(hour));
-  const target = Number(process.argv[2]);
+    const hours = process.argv.slice(3).map(hour => Number(hour));
+    const target = Number(process.argv[2]);
 
-  if (validateInput(hours, target)) {
-    console.log(calculateExercises(hours, target));
-  }
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log('Error:', error.message);
+    if (validateInput(hours, target)) {
+      console.log(calculateExercises(hours, target));
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Error:', error.message);
+    }
   }
 }
