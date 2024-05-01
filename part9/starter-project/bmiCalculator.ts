@@ -3,7 +3,7 @@ interface BmiValues {
   weight: number
 }
 
-const parseArguments = (height: number, weight: number): BmiValues => {
+export const parseArguments = (height: number, weight: number): BmiValues => {
   if (height <= 0 || weight <= 0) {
     throw new Error('Height and weight must be positive');
   }
@@ -18,11 +18,11 @@ const parseArguments = (height: number, weight: number): BmiValues => {
   };
 }
 
-const calculateBmi = (height: number, weight: number): number => {
+export const calculateBmi = (height: number, weight: number): number => {
   return weight / ( (height/100) ** 2 );
 }
 
-const bmiCategory = (bmi: number): string => {
+export const bmiCategory = (bmi: number): string => {
   const bmiFixed = bmi.toFixed(2);
 
   switch(true) {
@@ -47,15 +47,17 @@ const bmiCategory = (bmi: number): string => {
   }
 }
 
-try {
-  const { height, weight } = parseArguments(Number(process.argv[2]), Number(process.argv[3]));
+if (require.main === module) {
+  try {
+    const { height, weight } = parseArguments(Number(process.argv[2]), Number(process.argv[3]));
 
-  const bmi = calculateBmi(height, weight);
-  const category = bmiCategory(bmi);
+    const bmi = calculateBmi(height, weight);
+    const category = bmiCategory(bmi);
 
-  console.log(category);
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log('Error', error.message);
+    console.log(category);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Error', error.message);
+    }
   }
 }
