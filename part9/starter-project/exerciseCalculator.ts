@@ -33,32 +33,34 @@ const calculateExercises = (hours: number[], target: number): ExerciseResults =>
 
 
 const validateInput = (hours: number[], target: number): boolean => {
-  if (target <= 0) {
-    console.error('Target must be a positive number');
-    return false
+  if (target <= 0 || Number.isNaN(target)) {
+    throw new Error('Target must be a positive number');
   }
 
-  if (hours.some(hour => hour < 0)) {
-    console.error('All hours must be positive');
-    return false
+  if (hours.some(hour => hour < 0 || hour > 24)) {
+    throw new Error('All hours must be between 0 and 24');
+  }
+
+  if(hours.some(hour => typeof hour !== 'number' || Number.isNaN(hour))) {
+    throw new Error('All hours must be numbers');
   }
 
   return true
 }
 
 try {
-  if (!process.argv[2] || !process.argv[3]) {
+  if (!process.argv.length || process.argv.length < 4) {
     throw new Error('Please provide arguments');
   }
 
-  const hours = process.argv[2].split(',').map(hour => Number(hour));
-  const target = Number(process.argv[3])
+  const hours = process.argv.slice(3).map(hour => Number(hour));
+  const target = Number(process.argv[2])
 
   if (validateInput(hours, target)) {
     console.log(calculateExercises(hours, target));
   }
 } catch (error: unknown) {
   if (error instanceof Error) {
-    console.log('Error', error.message);
+    console.log('Error:', error.message);
   }
 }
