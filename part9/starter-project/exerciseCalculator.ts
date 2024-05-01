@@ -18,7 +18,7 @@ const calculateExercises = (hours: number[], target: number): ExerciseResults =>
     1: 'not too bad but could be better',
     2: 'good',
     3: 'excellent'
-  }
+  };
 
   return {
     periodLength,
@@ -45,8 +45,8 @@ const validateInput = (hours: number[], target: number): boolean => {
     throw new Error('All hours must be numbers');
   }
 
-  return true
-}
+  return true;
+};
 
 try {
   if (!process.argv.length || process.argv.length < 4) {
@@ -54,7 +54,7 @@ try {
   }
 
   const hours = process.argv.slice(3).map(hour => Number(hour));
-  const target = Number(process.argv[2])
+  const target = Number(process.argv[2]);
 
   if (validateInput(hours, target)) {
     console.log(calculateExercises(hours, target));

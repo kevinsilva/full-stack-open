@@ -4,7 +4,7 @@ import { calculateBmi, parseArguments, bmiCategory } from './bmiCalculator';
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
-})
+});
 
 app.get('/bmi', (req, res) => {
   const height = Number(req.query.height);
@@ -27,10 +27,10 @@ app.get('/bmi', (req, res) => {
    res.status(500).send('Internal server error');
   }
 
-})
+});
 
 const PORT = 3003;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-})
+});

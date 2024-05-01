@@ -16,11 +16,11 @@ export const parseArguments = (height: number, weight: number): BmiValues => {
     height,
     weight
   };
-}
+};
 
 export const calculateBmi = (height: number, weight: number): number => {
   return weight / ( (height/100) ** 2 );
-}
+};
 
 export const bmiCategory = (bmi: number): string => {
   const bmiFixed = bmi.toFixed(2);
@@ -45,7 +45,7 @@ export const bmiCategory = (bmi: number): string => {
     default:
       throw new Error('Invalid BMI');
   }
-}
+};
 
 if (require.main === module) {
   try {
