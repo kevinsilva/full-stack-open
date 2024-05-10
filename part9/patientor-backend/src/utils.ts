@@ -3,7 +3,7 @@ import { NewPatientEntryTypes } from './types';
 enum Gender {
   Male = 'male',
   Female = 'female',
-  NonBinary = 'nonbinary',
+  Other = 'other',
 }
 
 export const isString = (text: unknown): text is string => {
