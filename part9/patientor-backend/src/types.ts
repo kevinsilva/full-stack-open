@@ -5,12 +5,14 @@ export type DiagnoseTypes = {
 };
 
 export type PatientTypes = {
-  id: string;
+  id: string | undefined;
   name: string;
   dateOfBirth: string;
   ssn: string;
   gender: string;
   occupation: string;
 };
+
+export type NewPatientEntryTypes = Omit<PatientTypes, 'id'>;
 
 export type NonSensitivePatientTypes = Omit<PatientTypes, 'ssn'>;
