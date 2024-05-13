@@ -1,8 +1,8 @@
-import { CourseTypes } from "../types"
+import { CoursePart, CoursePartsTypes } from "../types"
 
-export const Total = ({ courseParts }: CourseTypes ) => {
+export const Total = ({ courseParts }: CoursePartsTypes ) => {
 
-  const totalExercises = courseParts.reduce((sum, part) => sum + part.exerciseCount, 0);
+  const totalExercises = courseParts.reduce((sum: number, part: CoursePart) => sum + part.exerciseCount, 0);
 
   return (
     <p>Number of exercises {totalExercises}</p>
