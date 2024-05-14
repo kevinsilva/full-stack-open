@@ -1,5 +1,9 @@
 export type HeaderTypes = {
-  name: string;
+  text: string;
+};
+
+export type AddDiaryTypes = {
+  onSubmit: (newEntry: DiaryTypes) => void;
 };
 
 export type DiaryTypes = {

@@ -5,5 +5,18 @@
 }
 
 body {
-  padding: 2rem;
+  padding: 0 2rem;
+}
+
+.header,
+.diary {
+  margin-bottom: 1rem;
+}
+
+.form {
+  margin-bottom: 3rem;
+}
+
+.button {
+  margin-top: 1rem;
 }

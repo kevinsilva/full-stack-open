@@ -1,5 +1,5 @@
 import { HeaderTypes } from '../types';
 
-export const Header = ({ name }: HeaderTypes) => {
-  return <h1>{name}</h1>;
+export const Header = ({ text }: HeaderTypes) => {
+  return <h2 className='header'>{text}</h2>;
 };
