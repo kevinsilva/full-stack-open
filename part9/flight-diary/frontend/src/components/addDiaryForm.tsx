@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import diaryService from '../services/diaries';
 import { ErrorMessage } from './errorMessage';
-import { AddDiaryTypes, NewDiaryEntryTypes } from '../types';
+import {
+  AddDiaryTypes,
+  NewDiaryEntryTypes,
+  Visiblity,
+  Weather,
+} from '../types';
 import axios from 'axios';
 
 const starterDiary: NewDiaryEntryTypes = {
   date: '',
-  visibility: '',
-  weather: '',
+  visibility: Visiblity.Great,
+  weather: Weather.Sunny,
   comment: '',
 };
 
@@ -38,30 +43,42 @@ export const AddDiaryForm = ({ onSubmit }: AddDiaryTypes) => {
         <div>
           date{' '}
           <input
-            type='text'
+            type='date'
             value={newDiary.date}
             onChange={(e) => setNewDiary({ ...newDiary, date: e.target.value })}
           />
         </div>
         <div>
           visibility{' '}
-          <input
-            type='text'
-            value={newDiary.visibility}
-            onChange={(e) =>
-              setNewDiary({ ...newDiary, visibility: e.target.value })
-            }
-          />
+          {Object.values(Visiblity).map((value) => (
+            <label key={value} className='radio-label'>
+              <input
+                className='radio'
+                type='radio'
+                name='visibility'
+                value={value}
+                checked={newDiary.visibility === value}
+                onChange={() => setNewDiary({ ...newDiary, visibility: value })}
+              />
+              {value}
+            </label>
+          ))}
         </div>
         <div>
           weather{' '}
-          <input
-            type='text'
-            value={newDiary.weather}
-            onChange={(e) =>
-              setNewDiary({ ...newDiary, weather: e.target.value })
-            }
-          />
+          {Object.values(Weather).map((value) => (
+            <label key={value} className='radio-label'>
+              <input
+                className='radio'
+                type='radio'
+                name='weather'
+                value={value}
+                checked={newDiary.weather === value}
+                onChange={() => setNewDiary({ ...newDiary, weather: value })}
+              />
+              {value}
+            </label>
+          ))}
         </div>
         <div>
           comment{' '}

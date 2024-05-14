@@ -25,3 +25,15 @@ body {
   color: red;
   margin-bottom: 1rem;
 }
+
+input {
+  margin-bottom: 0.5rem;
+}
+
+.radio {
+  margin-right: 0.2rem;
+}
+
+.radio-label {
+  margin-right: 0.5rem;
+}

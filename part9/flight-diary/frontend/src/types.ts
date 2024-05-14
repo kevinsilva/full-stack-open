@@ -6,11 +6,26 @@ export type AddDiaryTypes = {
   onSubmit: (newEntry: DiaryTypes) => void;
 };
 
+export enum Visiblity {
+  Great = 'great',
+  Good = 'good',
+  Ok = 'ok',
+  Poor = 'poor',
+}
+
+export enum Weather {
+  Sunny = 'sunny',
+  Rainy = 'rainy',
+  Cloudy = 'cloudy',
+  Windy = 'windy',
+  Stormy = 'stormy',
+}
+
 export type DiaryTypes = {
   id: number;
   date: string;
-  weather: string;
-  visibility: string;
+  weather: Weather;
+  visibility: Visiblity;
   comment: string;
 };
 
