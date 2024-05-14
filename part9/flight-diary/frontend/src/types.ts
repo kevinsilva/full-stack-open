@@ -1,4 +1,4 @@
-export type HeaderTypes = {
+export type TextTypes = {
   text: string;
 };
 

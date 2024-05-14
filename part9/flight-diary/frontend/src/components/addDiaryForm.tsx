@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import diaryService from '../services/diaries';
+import { ErrorMessage } from './errorMessage';
 import { AddDiaryTypes, NewDiaryEntryTypes } from '../types';
+import axios from 'axios';
 
 const starterDiary: NewDiaryEntryTypes = {
   date: '',
@@ -11,20 +13,27 @@ const starterDiary: NewDiaryEntryTypes = {
 
 export const AddDiaryForm = ({ onSubmit }: AddDiaryTypes) => {
   const [newDiary, setNewDiary] = useState<NewDiaryEntryTypes>(starterDiary);
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     try {
       const newEntry = await diaryService.create(newDiary);
-      setNewDiary(starterDiary);
       onSubmit(newEntry);
+      setNewDiary(starterDiary);
+      setError('');
     } catch (error: unknown) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data);
+      } else {
+        setError('Something went wrong');
+      }
     }
   };
 
   return (
     <div className='form'>
+      {error && <ErrorMessage text={error} />}
       <form onSubmit={handleSubmit}>
         <div>
           date{' '}

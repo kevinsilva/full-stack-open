@@ -9,6 +9,7 @@ export const DiaryList = ({ diaries }: { diaries: DiaryTypes[] }) => {
             <h4>{diary.date}</h4>
             <p>visibility: {diary.visibility}</p>
             <p>weather: {diary.weather}</p>
+            {diary.comment && <p>comment: {diary.comment}</p>}
           </div>
         ))}
     </>
