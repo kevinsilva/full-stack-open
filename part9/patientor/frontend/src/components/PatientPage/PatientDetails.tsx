@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, List, ListItem } from '@mui/material';
 import { PatientDetailsTypes } from '../../types';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
@@ -7,7 +7,7 @@ export const PatientDetails = ({ patientData }: PatientDetailsTypes) => {
   if (!patientData) return <div>No patient data</div>;
 
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box sx={{ mb: 2, mt: 4 }}>
       <Typography variant='h4' component='h2' gutterBottom>
         {patientData.name}{' '}
         {patientData.gender === 'male' ? <MaleIcon /> : <FemaleIcon />}
@@ -16,6 +16,42 @@ export const PatientDetails = ({ patientData }: PatientDetailsTypes) => {
       <Typography variant='body1'>
         occupation: {patientData.occupation}
       </Typography>
+
+      {patientData.entries.length > 0 && (
+        <Box>
+          <Typography
+            variant='h6'
+            component='h3'
+            sx={{ fontWeight: 'bold', my: 2 }}
+          >
+            entries
+          </Typography>
+          {patientData.entries.map((entry) => (
+            <>
+              <Typography key={entry.id} variant='body1'>
+                {entry.date}{' '}
+                <Typography
+                  variant='body1'
+                  component='span'
+                  sx={{ fontStyle: 'italic' }}
+                >
+                  {entry.description}
+                </Typography>
+              </Typography>
+              <List sx={{ listStyleType: 'disc' }}>
+                {entry.diagnosisCodes?.map((code, index) => (
+                  <ListItem
+                    key={`${code}-${index}`}
+                    sx={{ display: 'list-item', ml: 4 }}
+                  >
+                    {code}
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };
