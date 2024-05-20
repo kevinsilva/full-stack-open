@@ -1,10 +1,4 @@
-import { NewPatientEntryTypes } from './types';
-
-enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other',
-}
+import { NewPatientEntryTypes, Entry, Gender } from './types';
 
 export const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -15,7 +9,28 @@ const isDate = (date: string): boolean => {
 };
 
 const isGender = (param: string): param is Gender => {
-  return Object.values(Gender).map(v => v.toString()).includes(param);
+  return Object.values(Gender)
+    .map((v) => v.toString())
+    .includes(param);
+};
+
+const isEntry = (param: unknown): param is Entry => {
+  if (!param || typeof param !== 'object') {
+    return false;
+  }
+
+  if ('type' in param) {
+    switch (param.type) {
+      case 'HealthCheck':
+      case 'OccupationalHealthcare':
+      case 'Hospital':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  return false;
 };
 
 const parseName = (name: unknown): string => {
@@ -25,7 +40,8 @@ const parseName = (name: unknown): string => {
 };
 
 const parseDateOfBirth = (dateOfBirth: unknown): string => {
-  if (!isString(dateOfBirth) || !isDate(dateOfBirth)) throw new Error('Incorrect or missing date of birth');
+  if (!isString(dateOfBirth) || !isDate(dateOfBirth))
+    throw new Error('Incorrect or missing date of birth');
 
   return dateOfBirth;
 };
@@ -37,7 +53,8 @@ const parseSsn = (ssn: unknown): string => {
 };
 
 const parseGender = (gender: unknown): Gender => {
-  if (!isString(gender) || !isGender(gender)) throw new Error('Incorrect or missing gender');
+  if (!isString(gender) || !isGender(gender))
+    throw new Error('Incorrect or missing gender');
 
   return gender;
 };
@@ -54,19 +71,39 @@ export const parseId = (id: unknown): string => {
   return id;
 };
 
+export const parseEntries = (entries: unknown): Entry[] => {
+  if (!Array.isArray(entries)) throw new Error('Incorrect or missing entries');
+
+  const validEntries: Entry[] = entries.map((entry) => {
+    if (!isEntry(entry)) throw new Error('Incorrect or missing entry');
+    return entry;
+  });
+
+  return validEntries;
+};
+
 export const toNewPatientEntry = (object: unknown): NewPatientEntryTypes => {
-  if (!object || typeof object !== 'object')  throw new Error('Incorrect or missing data');
+  if (!object || typeof object !== 'object')
+    throw new Error('Incorrect or missing data');
 
-  if ('name' in object && 'dateOfBirth' in object && 'ssn' in object && 'gender' in object && 'occupation' in object) {
-  const newEntry: NewPatientEntryTypes = {
-    name: parseName(object.name),
-    dateOfBirth: parseDateOfBirth(object.dateOfBirth),
-    ssn: parseSsn(object.ssn),
-    gender: parseGender(object.gender),
-    occupation: occupation(object.occupation),
-  };
+  if (
+    'name' in object &&
+    'dateOfBirth' in object &&
+    'ssn' in object &&
+    'gender' in object &&
+    'occupation' in object &&
+    'entries' in object
+  ) {
+    const newEntry: NewPatientEntryTypes = {
+      name: parseName(object.name),
+      dateOfBirth: parseDateOfBirth(object.dateOfBirth),
+      ssn: parseSsn(object.ssn),
+      gender: parseGender(object.gender),
+      occupation: occupation(object.occupation),
+      entries: parseEntries(object.entries),
+    };
 
-  return newEntry;
+    return newEntry;
   }
 
   throw new Error('Incorrect data: some fields are missing');

@@ -27,7 +27,6 @@ const addPatient = (entry: NewPatientEntryTypes): PatientTypes => {
 
   const newPatientEntry = {
     id,
-    entries: [],
     ...entry,
   };
 

@@ -10,9 +10,9 @@ router.get('/', (_req, res) => {
 
 router.get('/:id', (req, res) => {
   const patient = patientServices.getOne(req.params.id);
+  console.log(patient);
 
   if (patient) {
-    if (!patient.entries) patient.entries = [];
     res.send(patient);
   } else res.sendStatus(404);
 });
