@@ -3,7 +3,10 @@ import { PatientDetailsTypes } from '../../types';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 
-export const PatientDetails = ({ patientData }: PatientDetailsTypes) => {
+export const PatientDetails = ({
+  patientData,
+  patientDiagnoses,
+}: PatientDetailsTypes) => {
   if (!patientData) return <div>No patient data</div>;
 
   return (
@@ -27,8 +30,8 @@ export const PatientDetails = ({ patientData }: PatientDetailsTypes) => {
             entries
           </Typography>
           {patientData.entries.map((entry) => (
-            <>
-              <Typography key={entry.id} variant='body1'>
+            <Box key={entry.id}>
+              <Typography variant='body1'>
                 {entry.date}{' '}
                 <Typography
                   variant='body1'
@@ -44,11 +47,11 @@ export const PatientDetails = ({ patientData }: PatientDetailsTypes) => {
                     key={`${code}-${index}`}
                     sx={{ display: 'list-item', ml: 4 }}
                   >
-                    {code}
+                    {code} {patientDiagnoses.find((d) => d.code === code)?.name}
                   </ListItem>
                 ))}
               </List>
-            </>
+            </Box>
           ))}
         </Box>
       )}

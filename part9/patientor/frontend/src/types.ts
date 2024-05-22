@@ -20,6 +20,10 @@ export interface Patient {
   entries: Entry[];
 }
 
+export type PatientPageTypes = {
+  diagnoses: Diagnosis[];
+};
+
 export interface BaseEntry {
   id: string;
   description: string;
@@ -64,6 +68,7 @@ export type Entry =
 
 export type PatientDetailsTypes = {
   patientData: Patient;
+  patientDiagnoses: Diagnosis[];
 };
 
 export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;
