@@ -24,6 +24,7 @@ export const PatientPage = ({ diagnoses }: PatientPageTypes) => {
     };
 
     void fetchPatientData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (!patientData) return <div>No patient data</div>;

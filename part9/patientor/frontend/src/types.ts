@@ -24,6 +24,11 @@ export type PatientPageTypes = {
   diagnoses: Diagnosis[];
 };
 
+export type EntryDetailsTypes = {
+  entry: Entry;
+  codes: Diagnosis[];
+};
+
 export interface BaseEntry {
   id: string;
   description: string;
@@ -39,12 +44,12 @@ export enum HealthCheckRating {
   'CriticalRisk' = 3,
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: HealthCheckRating;
 }
 
-interface OccupationalHealthCareEntry extends BaseEntry {
+export interface OccupationalHealthCareEntry extends BaseEntry {
   type: 'OccupationalHealthcare';
   employerName: string;
   sickLeave?: {
@@ -53,7 +58,7 @@ interface OccupationalHealthCareEntry extends BaseEntry {
   };
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
   type: 'Hospital';
   discharge?: {
     date: string;

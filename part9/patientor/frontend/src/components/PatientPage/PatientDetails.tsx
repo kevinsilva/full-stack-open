@@ -1,7 +1,8 @@
-import { Box, Typography, List, ListItem } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { PatientDetailsTypes } from '../../types';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import { EntryDetails } from './EntryDetails';
 
 export const PatientDetails = ({
   patientData,
@@ -30,27 +31,11 @@ export const PatientDetails = ({
             entries
           </Typography>
           {patientData.entries.map((entry) => (
-            <Box key={entry.id}>
-              <Typography variant='body1'>
-                {entry.date}{' '}
-                <Typography
-                  variant='body1'
-                  component='span'
-                  sx={{ fontStyle: 'italic' }}
-                >
-                  {entry.description}
-                </Typography>
-              </Typography>
-              <List sx={{ listStyleType: 'disc' }}>
-                {entry.diagnosisCodes?.map((code, index) => (
-                  <ListItem
-                    key={`${code}-${index}`}
-                    sx={{ display: 'list-item', ml: 4 }}
-                  >
-                    {code} {patientDiagnoses.find((d) => d.code === code)?.name}
-                  </ListItem>
-                ))}
-              </List>
+            <Box
+              key={entry.id}
+              sx={{ p: 1, border: '1px solid grey', borderRadius: 1, mb: 2 }}
+            >
+              <EntryDetails entry={entry} codes={patientDiagnoses} />
             </Box>
           ))}
         </Box>
