@@ -1,11 +1,27 @@
 import { Typography, Box, List, ListItem } from '@mui/material';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import { parseHealthCheckRating } from '../../../utils';
-import { HealthCheckEntry, Diagnosis } from '../../../types';
+import { HealthCheckEntry, Diagnosis, HealthCheckRating } from '../../../types';
+import { assertNever } from '../../../utils';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type HealthCheckDetailsTypes = {
   entry: HealthCheckEntry;
   codes: Diagnosis[];
+};
+
+const parseHealthCheckRating = (rating: HealthCheckRating): JSX.Element => {
+  switch (rating) {
+    case HealthCheckRating.Healthy:
+      return <FavoriteIcon sx={{ color: 'red' }} />;
+    case HealthCheckRating.LowRisk:
+      return <FavoriteIcon sx={{ color: 'darkorange' }} />;
+    case HealthCheckRating.HighRisk:
+      return <FavoriteIcon sx={{ color: 'green' }} />;
+    case HealthCheckRating.CriticalRisk:
+      return <FavoriteIcon sx={{ color: 'blue' }} />;
+    default:
+      return assertNever(rating);
+  }
 };
 
 export const HealthCheckDetails = ({
