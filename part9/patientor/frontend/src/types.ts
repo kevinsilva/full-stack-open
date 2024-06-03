@@ -29,6 +29,16 @@ export type EntryDetailsTypes = {
   codes: Diagnosis[];
 };
 
+export type DischargeTypes = {
+  date: string;
+  criteria: string;
+};
+
+export type SickLeaveTypes = {
+  startDate: string;
+  endDate: string;
+};
+
 export interface BaseEntry {
   id: string;
   description: string;
@@ -52,18 +62,12 @@ export interface HealthCheckEntry extends BaseEntry {
 export interface OccupationalHealthCareEntry extends BaseEntry {
   type: 'OccupationalHealthcare';
   employerName: string;
-  sickLeave?: {
-    startDate: string;
-    endDate: string;
-  };
+  sickLeave?: SickLeaveTypes;
 }
 
 export interface HospitalEntry extends BaseEntry {
   type: 'Hospital';
-  discharge?: {
-    date: string;
-    criteria: string;
-  };
+  discharge?: DischargeTypes;
 }
 
 export type Entry =
@@ -77,3 +81,14 @@ export type PatientDetailsTypes = {
 };
 
 export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;
+
+export type ChildrenTypes = {
+  children: React.ReactNode;
+};
+
+export type ContextTypes = {
+  patients: Patient[];
+  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
+  diagnoses: Diagnosis[];
+  setDiagnoses: React.Dispatch<React.SetStateAction<Diagnosis[]>>;
+};

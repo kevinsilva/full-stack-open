@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import patientService from '../../services/patients';
 import { useParams } from 'react-router-dom';
-import { Patient, PatientPageTypes, Diagnosis } from '../../types';
+import { useDataContext } from '../../context/dataContext';
+import { Patient, Diagnosis } from '../../types';
 import { PatientDetails } from './PatientDetails';
 
-export const PatientPage = ({ diagnoses }: PatientPageTypes) => {
+export const PatientPage = () => {
   const [patientData, setPatientData] = useState<Patient | null>(null);
   const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
   const id = useParams().id;
+  const { diagnoses } = useDataContext();
 
   useEffect(() => {
     const fetchPatientData = async () => {
@@ -29,6 +31,15 @@ export const PatientPage = ({ diagnoses }: PatientPageTypes) => {
 
   if (!patientData) return <div>No patient data</div>;
   return (
-    <PatientDetails patientData={patientData} patientDiagnoses={diagnosis} />
+    <div
+      style={{
+        backgroundColor: '#f5f5f5',
+        width: '100%',
+        height: '100%',
+        padding: '20px',
+      }}
+    >
+      <PatientDetails patientData={patientData} patientDiagnoses={diagnosis} />
+    </div>
   );
 };
