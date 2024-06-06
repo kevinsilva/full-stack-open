@@ -8,5 +8,7 @@ In this part, we will be using the tools previously introduced to build end-to-e
 
 This part is created by Tuomo Torppa, Tuukka Peuraniemi and Jani Rapo, the awesome developers of Terveystalo, the largest private healthcare service provider in Finland. Terveystalo’s nationwide network covers 300 locations across Finland. The clinic network is supplemented by 24/7 digital services.
 
-- **9.1-:9.** [](.//)
-- **9.-:9.** [](.//)
+- **9.1-9.7** [starter-project](./starter-project/)
+- **9.8-9.13 / 9.20-9.29** [patientor](./patientor)
+- **9.14-9.15** [course-information](./course-information)
+- **9.16-9.19** [course-information](./flight-diary)
