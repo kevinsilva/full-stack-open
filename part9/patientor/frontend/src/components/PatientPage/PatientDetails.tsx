@@ -39,6 +39,7 @@ export const PatientDetails = ({
           patientData={patientData}
           setPatientData={setPatientData}
           setPatientDiagnosis={setPatientDiagnosis}
+          setShowForm={setShowForm}
         />
       )}
 

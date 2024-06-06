@@ -88,6 +88,7 @@ export type EntryFormTypes = {
   patientData: Patient;
   setPatientData: React.Dispatch<SetStateAction<Patient | null>>;
   setPatientDiagnosis: React.Dispatch<SetStateAction<Diagnosis[]>>;
+  setShowForm: React.Dispatch<SetStateAction<boolean>>;
 };
 
 export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;

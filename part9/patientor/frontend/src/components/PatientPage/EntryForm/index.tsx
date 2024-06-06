@@ -34,6 +34,7 @@ export const EntryForm = ({
   patientData,
   setPatientData,
   setPatientDiagnosis,
+  setShowForm,
 }: EntryFormTypes) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
@@ -116,6 +117,7 @@ export const EntryForm = ({
 
         setPatientData({ ...patientData, entries: addedPatientEntry });
         setError('');
+        setShowForm(false);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
