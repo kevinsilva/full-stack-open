@@ -22,13 +22,14 @@ export const HospitalForm = ({
 
   return (
     <div>
-      <InputLabel style={{ marginTop: 20 }}>Discharge</InputLabel>
+      <InputLabel sx={{ my: 2 }}>Discharge</InputLabel>
       <TextField
         label='Date'
         fullWidth
         type='date'
         InputLabelProps={{ shrink: true }}
         value={discharge.date}
+        sx={{ mb: 2 }}
         onChange={({ target }) =>
           setDischarge({ ...discharge, date: target.value })
         }
@@ -42,7 +43,7 @@ export const HospitalForm = ({
           setDischarge({ ...discharge, criteria: target.value })
         }
       />
-      <InputLabel style={{ marginTop: 20 }}>Diagnosis Codes</InputLabel>
+      <InputLabel sx={{ mt: 2 }}>Diagnosis Codes</InputLabel>
       <Select
         label='Diagnosis Codes'
         fullWidth

@@ -8,7 +8,6 @@ import { apiBaseUrl } from './constants';
 import PatientListPage from './components/PatientListPage';
 import { PatientPage } from './components/PatientPage';
 
-import { EntryForm } from './components/PatientPage/EntryForm';
 import DataContextProvider from './context/dataContext';
 
 const App = () => {
@@ -21,11 +20,10 @@ const App = () => {
       <Router>
         <DataContextProvider>
           <Container>
-            <EntryForm />
             <Typography variant='h3' style={{ marginBottom: '0.5em' }}>
               Patientor
             </Typography>
-            <Button component={Link} to='/' variant='contained' color='primary'>
+            <Button component={Link} to='/' variant='outlined' color='primary'>
               Home
             </Button>
             <Divider hidden />

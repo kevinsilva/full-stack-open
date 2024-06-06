@@ -188,8 +188,7 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntryTypes => {
     'dateOfBirth' in object &&
     'ssn' in object &&
     'gender' in object &&
-    'occupation' in object &&
-    'entries' in object
+    'occupation' in object
   ) {
     const newEntry: NewPatientEntryTypes = {
       name: parseName(object.name),
@@ -197,8 +196,11 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntryTypes => {
       ssn: parseSsn(object.ssn),
       gender: parseGender(object.gender),
       occupation: parseOccupation(object.occupation),
-      entries: parseEntries(object.entries),
     };
+
+    if ('entries' in object) {
+      newEntry.entries = parseEntries(object.entries);
+    }
 
     return newEntry;
   }

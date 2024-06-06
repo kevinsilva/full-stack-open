@@ -8,6 +8,10 @@ router.get('/', (_req, res) => {
   res.send(patientServices.getNonSensitiveEntries());
 });
 
+router.get('/sensitive', (_req, res) => {
+  res.send(patientServices.getEntries());
+});
+
 router.get('/:id', (req, res) => {
   const patient = patientServices.getOne(req.params.id);
   console.log(patient);

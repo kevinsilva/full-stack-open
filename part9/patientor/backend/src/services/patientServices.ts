@@ -6,7 +6,7 @@ import {
   NewEntryTypes,
   NewPatientEntryTypes,
 } from '../types';
-import { v1 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const patients: PatientTypes[] = patientsData;
 
@@ -23,6 +23,10 @@ const addEntry = (patientId: string, entry: NewEntryTypes): Entry => {
     id,
     ...entry,
   };
+
+  if (!patient.entries) {
+    patient.entries = [];
+  }
 
   patient.entries.push(newEntry);
 

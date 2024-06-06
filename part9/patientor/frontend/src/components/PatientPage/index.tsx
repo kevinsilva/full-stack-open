@@ -22,6 +22,7 @@ export const PatientPage = () => {
         patientDiagnosisCodes?.includes(d.code)
       );
       setPatientData(patientData);
+      console.log(patientDiagnosis);
       setDiagnosis(patientDiagnosis);
     };
 
@@ -33,13 +34,16 @@ export const PatientPage = () => {
   return (
     <div
       style={{
-        backgroundColor: '#f5f5f5',
         width: '100%',
         height: '100%',
-        padding: '20px',
       }}
     >
-      <PatientDetails patientData={patientData} patientDiagnoses={diagnosis} />
+      <PatientDetails
+        patientData={patientData}
+        setPatientData={setPatientData}
+        patientDiagnosis={diagnosis}
+        setPatientDiagnosis={setDiagnosis}
+      />
     </div>
   );
 };

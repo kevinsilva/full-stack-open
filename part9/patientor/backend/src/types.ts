@@ -11,7 +11,7 @@ export type PatientTypes = {
   occupation: string;
   dateOfBirth: string;
   gender: Gender;
-  entries: Entry[];
+  entries?: Entry[];
 };
 
 export type DiagnoseTypes = {

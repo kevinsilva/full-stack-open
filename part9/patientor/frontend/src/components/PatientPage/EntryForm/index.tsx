@@ -1,16 +1,28 @@
-import { useState } from 'react';
+import { useState, SyntheticEvent } from 'react';
 import {
   InputLabel,
   Typography,
   TextField,
   Select,
   MenuItem,
+  Button,
   SelectChangeEvent,
 } from '@mui/material';
-import { Diagnosis, DischargeTypes, SickLeaveTypes } from '../../../types';
+import {
+  Diagnosis,
+  DischargeTypes,
+  NewEntryTypes,
+  SickLeaveTypes,
+  EntryFormTypes,
+} from '../../../types';
 import { HospitalForm } from './HospitalForm';
 import { OccupationalHealthcareForm } from './OccupationalHealthcareForm';
 import { HealthCheckForm } from './HealthCheckForm';
+import patientService from '../../../services/patients';
+import { ErrorMessage } from '../../ErrorMessage';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useDataContext } from '../../../context/dataContext';
 
 const typeOptions = [
   { value: 'HealthCheck', label: 'Health Check' },
@@ -18,7 +30,11 @@ const typeOptions = [
   { value: 'Hospital', label: 'Hospital' },
 ];
 
-export const EntryForm = () => {
+export const EntryForm = ({
+  patientData,
+  setPatientData,
+  setPatientDiagnosis,
+}: EntryFormTypes) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [specialist, setSpecialist] = useState<string>('');
@@ -35,24 +51,110 @@ export const EntryForm = () => {
     startDate: '',
     endDate: '',
   });
-  const [healthCheckRating, setHealthCheckRating] = useState<string>('');
+  const [healthCheckRating, setHealthCheckRating] = useState<number>(0);
+  const [error, setError] = useState<string>('');
+
+  const id = useParams().id;
+  const { diagnoses } = useDataContext();
 
   const onTypeChange = (event: SelectChangeEvent<string>) => {
     if (typeof event.target.value === 'string') setType(event.target.value);
   };
 
+  const onSubmit = async (event: SyntheticEvent) => {
+    event.preventDefault();
+    try {
+      let entryData: NewEntryTypes | undefined = undefined;
+
+      if (type === 'HealthCheck') {
+        entryData = {
+          description,
+          date,
+          specialist,
+          type,
+          healthCheckRating,
+        };
+      }
+      if (type === 'OccupationalHealthcare') {
+        entryData = {
+          description,
+          date,
+          specialist,
+          type,
+          diagnosisCodes: diagnosis,
+          employerName,
+          sickLeave,
+        };
+      }
+
+      if (type === 'Hospital') {
+        entryData = {
+          description,
+          date,
+          specialist,
+          type,
+          diagnosisCodes: diagnosis,
+          discharge,
+        };
+      }
+
+      if (id && entryData) {
+        const entryResponse = await patientService.createEntry(id, entryData);
+
+        if (
+          entryResponse.diagnosisCodes &&
+          entryResponse.diagnosisCodes.length > 0
+        ) {
+          const patientDiagnosis = diagnoses
+            .filter((d) => entryResponse.diagnosisCodes?.includes(d.code))
+            .map((d) => d);
+
+          setPatientDiagnosis(patientDiagnosis);
+        }
+
+        const addedPatientEntry = patientData.entries.concat(entryResponse);
+
+        setPatientData({ ...patientData, entries: addedPatientEntry });
+        setError('');
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error?.response?.data &&
+          typeof error?.response?.data === 'string'
+        ) {
+          const message = error.response.data.replace(
+            'Something went wrong. Error: ',
+            ''
+          );
+          console.error(message);
+          setError(message);
+        }
+      } else {
+        console.error('Unknown error', error);
+        setError('Unknown error');
+      }
+    }
+  };
   return (
     <div>
-      <form>
-        <Typography variant='h6'>New Entry</Typography>
-        <InputLabel style={{ marginTop: 20 }}>Description</InputLabel>
+      {error && <ErrorMessage text={error} />}
+      <form onSubmit={onSubmit}>
+        <Typography
+          variant='h6'
+          component='h3'
+          sx={{ fontWeight: 'bold', my: 2 }}
+        >
+          new entry
+        </Typography>
+        <InputLabel sx={{ mt: 2 }}>Description</InputLabel>
         <TextField
           placeholder='Add a description'
           fullWidth
           value={description}
           onChange={({ target }) => setDescription(target.value)}
         />
-        <InputLabel style={{ marginTop: 20 }}>Date</InputLabel>
+        <InputLabel sx={{ mt: 2 }}>Date</InputLabel>
         <TextField
           fullWidth
           type='date'
@@ -60,13 +162,13 @@ export const EntryForm = () => {
           InputLabelProps={{ shrink: true }}
           onChange={({ target }) => setDate(target.value)}
         />
-        <InputLabel style={{ marginTop: 20 }}>Specialist</InputLabel>
+        <InputLabel sx={{ mt: 2 }}>Specialist</InputLabel>
         <TextField
           fullWidth
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <InputLabel style={{ marginTop: 20 }}>Type</InputLabel>
+        <InputLabel sx={{ mt: 2 }}>Type</InputLabel>
         <Select label='Type' fullWidth value={type} onChange={onTypeChange}>
           {typeOptions.map((option) => (
             <MenuItem key={option.label} value={option.value}>
@@ -101,6 +203,14 @@ export const EntryForm = () => {
             setHealthCheckRating={setHealthCheckRating}
           />
         )}
+        <Button
+          type='submit'
+          variant='contained'
+          color='primary'
+          sx={{ mt: 2 }}
+        >
+          Add Entry
+        </Button>
       </form>
     </div>
   );

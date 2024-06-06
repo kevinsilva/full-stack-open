@@ -26,14 +26,14 @@ export const OccupationalHealthcareForm = ({
 
   return (
     <>
-      <InputLabel style={{ marginTop: 20 }}>Employer Name</InputLabel>
+      <InputLabel sx={{ mt: 2 }}>Employer Name</InputLabel>
       <TextField
         placeholder='Add Employer Name'
         fullWidth
         value={employerName}
         onChange={({ target }) => setEmployerName(target.value)}
       />
-      <InputLabel style={{ marginTop: 20 }}>Diagnosis Codes</InputLabel>
+      <InputLabel sx={{ mt: 2 }}>Diagnosis Codes</InputLabel>
       <Select
         label='Diagnosis Codes'
         fullWidth
@@ -47,13 +47,14 @@ export const OccupationalHealthcareForm = ({
           </MenuItem>
         ))}
       </Select>
-      <InputLabel style={{ marginTop: 20 }}>Sick Leave</InputLabel>
+      <InputLabel sx={{ my: 2 }}>Sick Leave</InputLabel>
       <TextField
         fullWidth
         label='Start Date'
         InputLabelProps={{ shrink: true }}
         type='date'
         value={sickLeave.startDate}
+        sx={{ mb: 2 }}
         onChange={({ target }) =>
           setSickLeave({ ...sickLeave, startDate: target.value })
         }

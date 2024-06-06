@@ -1,13 +1,18 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { PatientDetailsTypes } from '../../types';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import { useState } from 'react';
 import { EntryDetails } from './EntryDetails';
+import { EntryForm } from './EntryForm';
 
 export const PatientDetails = ({
   patientData,
-  patientDiagnoses,
+  setPatientData,
+  patientDiagnosis,
+  setPatientDiagnosis,
 }: PatientDetailsTypes) => {
+  const [showForm, setShowForm] = useState<boolean>(false);
   if (!patientData) return <div>No patient data</div>;
 
   return (
@@ -20,6 +25,22 @@ export const PatientDetails = ({
       <Typography variant='body1'>
         occupation: {patientData.occupation}
       </Typography>
+      <Button
+        onClick={() => setShowForm(!showForm)}
+        variant='text'
+        color='primary'
+        sx={{ mt: 2 }}
+      >
+        {showForm ? 'Hide Entry Form' : 'Add New Entry'}
+      </Button>
+
+      {showForm && (
+        <EntryForm
+          patientData={patientData}
+          setPatientData={setPatientData}
+          setPatientDiagnosis={setPatientDiagnosis}
+        />
+      )}
 
       {patientData.entries.length > 0 && (
         <Box>
@@ -35,7 +56,7 @@ export const PatientDetails = ({
               key={entry.id}
               sx={{ p: 1, border: '1px solid grey', borderRadius: 1, mb: 2 }}
             >
-              <EntryDetails entry={entry} codes={patientDiagnoses} />
+              <EntryDetails entry={entry} codes={patientDiagnosis} />
             </Box>
           ))}
         </Box>

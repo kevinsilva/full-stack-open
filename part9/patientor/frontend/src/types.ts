@@ -1,3 +1,5 @@
+import { SetStateAction } from 'react';
+
 export interface Diagnosis {
   code: string;
   name: string;
@@ -76,11 +78,26 @@ export type Entry =
   | HealthCheckEntry;
 
 export type PatientDetailsTypes = {
+  setPatientData: React.Dispatch<SetStateAction<Patient | null>>;
   patientData: Patient;
-  patientDiagnoses: Diagnosis[];
+  patientDiagnosis: Diagnosis[];
+  setPatientDiagnosis: React.Dispatch<SetStateAction<Diagnosis[]>>;
+};
+
+export type EntryFormTypes = {
+  patientData: Patient;
+  setPatientData: React.Dispatch<SetStateAction<Patient | null>>;
+  setPatientDiagnosis: React.Dispatch<SetStateAction<Diagnosis[]>>;
 };
 
 export type PatientFormValues = Omit<Patient, 'id' | 'entries'>;
+
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type NewEntryTypes = UnionOmit<Entry, 'id'>;
 
 export type ChildrenTypes = {
   children: React.ReactNode;

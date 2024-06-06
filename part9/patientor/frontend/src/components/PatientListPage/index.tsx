@@ -20,17 +20,10 @@ import HealthRatingBar from '../HealthRatingBar';
 import patientService from '../../services/patients';
 import { useDataContext } from '../../context/dataContext';
 
-// interface Props {
-//   patients: Patient[];
-//   setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
-// }
-
 const PatientListPage = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-
   const { patients, setPatients } = useDataContext();
-
   const navigate = useNavigate();
 
   const openModal = (): void => setModalOpen(true);
